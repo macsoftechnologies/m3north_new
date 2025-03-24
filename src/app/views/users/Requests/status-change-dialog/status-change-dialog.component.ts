@@ -181,7 +181,9 @@ export class StatusChangeDialogComponent implements OnInit {
     system_drained: null,
     excavation_shoring: null,
     rams_number: null,
-
+    night_shift: null,
+    new_date: null,
+    new_end_time: null
   };
   images: any[] = [];
   base64Images: any[] = [];
@@ -268,6 +270,9 @@ export class StatusChangeDialogComponent implements OnInit {
     this.updaterequestdata.Crane_Requested =
       this.data["payload"]["Crane_Requested"];
     this.updaterequestdata.End_Time = this.data["payload"]["End_Time"];
+    this.updaterequestdata.new_date = this.data["payload"]["new_date"];
+    this.updaterequestdata.night_shift = this.data["payload"]["night_shift"];
+    this.updaterequestdata.new_end_time = this.data["payload"]["new_end_time"];
     this.updaterequestdata.Floor_Id = this.data["payload"]["Floor_Id"];
     this.updaterequestdata.Foreman = this.data["payload"]["Foreman"];
     this.updaterequestdata.Foreman_Phone_Number =

@@ -355,6 +355,48 @@
               
             </mat-grid-tile>
           </mat-grid-list>
+          <mat-grid-list  cols="3" rowHeight="80px">
+            <mat-grid-tile class="night-shift">
+              <label>
+                Is this a night shift?
+              </label> 
+              <mat-checkbox 
+                formControlName="night_shift"
+                [checked]="RequestForm.get('night_shift').value === 1"
+                (change)="toggleNightShift($event.checked)">
+                  Yes
+              </mat-checkbox>
+              
+              <mat-error class="error-message" *ngIf="RequestForm.get('night_shift').invalid && RequestForm.get('night_shift').touched">
+                Please confirm if this is a night shift
+              </mat-error>
+            </mat-grid-tile>
+            <!-- new date and new end time if night shift checked -->
+            <mat-grid-tile *ngIf="isnightshiftyes" class="night-shift-fields">
+              <mat-form-field class="datepikr full-width" appearance="outline">
+                <mat-label>New Date</mat-label>
+                <input matInput [min]="minDate" formControlName="newWorkDate" [max]="maxDate" [matDatepicker]="spicker"
+                  [class.is-invalid]="RequestForm.get('newWorkDate').invalid && RequestForm.get('newWorkDate').touched" />
+                <mat-datepicker-toggle matSuffix [for]="spicker"></mat-datepicker-toggle>
+                <mat-datepicker #spicker></mat-datepicker>
+                <mat-error class="error-message"
+                  *ngIf="RequestForm.get('newWorkDate').invalid && RequestForm.get('newWorkDate').touched">Please select the
+                  New Date</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile *ngIf="isnightshiftyes" class="night-shift-fields">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label>New End Time</mat-label>
+                <input matInput [ngxTimepicker]="endTime" [format]="24" placeholder="New End Time" formControlName="new_end_time"
+                  [class.is-invalid]="RequestForm.get('new_end_time').invalid && RequestForm.get('new_end_time').touched" />
+                  <ngx-material-timepicker #endTime [minutesGap]="5"></ngx-material-timepicker>
+                 <mat-error *ngIf="RequestForm.get('new_end_time').hasError('required')">
+                  New End Time is required
+                </mat-error>
+              </mat-form-field>
+              
+            </mat-grid-tile>
+          </mat-grid-list>
           <!-- <mat-grid-list cols="3" rowHeight="80px" *ngIf="Assigneditform">
             <mat-grid-tile></mat-grid-tile>
             <mat-grid-tile>

@@ -88,6 +88,7 @@ export class NewRequestComponent implements OnInit {
   isnewrequestcreated: boolean = false;
   iscmsyes: boolean = false;
   ishotworkyes: boolean = false;
+  isnightshiftyes: boolean = false;
   isOtherConditionyes: boolean = false;
   isnewhotworkyes: boolean = false;
   iselectricalyes: boolean = false;
@@ -385,6 +386,9 @@ export class NewRequestComponent implements OnInit {
     Start_Time: null,
     End_Time: null,
     Site_Id: null,
+    night_shift: null,
+    new_date: null,
+    new_end_time: null,
     Building_Id: null,
     Floor_Id: null,
     Room_Nos: null,
@@ -693,6 +697,9 @@ export class NewRequestComponent implements OnInit {
     system_drained: null,
     excavation_shoring: null,
     rams_number: null,
+    night_shift: null,
+    new_date: null,
+    new_end_time: null,
   };
 
   userdata: any = {};
@@ -1474,6 +1481,9 @@ export class NewRequestComponent implements OnInit {
       Startdate: ["", Validators.required],
       StartTime: ["", Validators.required],
       EndTime: ["", Validators.required],
+      night_shift: [""],
+      newWorkDate: [""],
+      new_end_time: [""],
       Site: ["", Validators.required],
       Building: ["", Validators.required],
       FloorName: ["", Validators.required],
@@ -1782,6 +1792,11 @@ export class NewRequestComponent implements OnInit {
 
   onEndTimeChange() {
     this.RequestForm.get('EndTime')?.updateValueAndValidity();
+  }
+  
+  toggleNightShift(isChecked: boolean) {
+    this.isnightshiftyes = isChecked;
+    this.RequestForm.get('night_shift').setValue(isChecked ? 1 : 0);
   }
 
   filter(val: string) {
@@ -2906,6 +2921,12 @@ export class NewRequestComponent implements OnInit {
     // Check if the start date exists and is valid
     let workdate = startDateValue != '0000-00-00' ? this.datePipe.transform(startDateValue, "yyyy-MM-dd")
       : null;
+      let newDate = this.RequestForm.controls["newWorkDate"].value;
+      let newdate = newDate != '0000-00-00' ? this.datePipe.transform(newDate, "yyyy-MM-dd")
+        : null;
+      this.Requestdata.night_shift = this.RequestForm.controls["night_shift"].value;
+      this.Requestdata.new_date = newdate;
+      this.Requestdata.new_end_time = this.RequestForm.controls["new_end_time"].value;  
     this.Requestdata.Working_Date = workdate;
     this.Requestdata.Start_Time = this.RequestForm.controls["StartTime"].value;
     this.Requestdata.End_Time = this.RequestForm.controls["EndTime"].value;
@@ -3206,11 +3227,17 @@ export class NewRequestComponent implements OnInit {
       //   "yyyy-MM-dd"
       // );
       let startDateValue = this.RequestForm.controls["Startdate"].value;
-
+      let newDateValue = this.RequestForm.controls["newWorkDate"].value;
       // Check if the start date exists and is valid
       let workdate = startDateValue != '0000-00-00' ? this.datePipe.transform(startDateValue, "yyyy-MM-dd")
         : null;
-
+        let newworkdate = newDateValue != '0000-00-00' ? this.datePipe.transform(newDateValue, "yyyy-MM-dd")
+        : null;
+        this.updaterequestdata.night_shift =
+        this.RequestForm.controls["night_shift"].value;
+        this.updaterequestdata.new_date = newworkdate;
+        this.updaterequestdata.new_end_time =
+        this.RequestForm.controls["new_end_time"].value;
       this.updaterequestdata.Working_Date = workdate;
       this.updaterequestdata.Start_Time =
         this.RequestForm.controls["StartTime"].value;
@@ -3499,7 +3526,15 @@ export class NewRequestComponent implements OnInit {
       this.RequestForm.controls["Startdate"].value,
       "yyyy-MM-dd"
     );
-
+    let newworkdate = this.datePipe.transform(
+      this.RequestForm.controls["newWorkDate"].value,
+      "yyyy-MM-dd"
+    );
+    this.updaterequestdata.night_shift =
+      this.RequestForm.controls["night_shift"].value;
+      this.updaterequestdata.new_date = newworkdate;
+      this.updaterequestdata.new_end_time =
+      this.RequestForm.controls["new_end_time"].value;
     this.updaterequestdata.Working_Date = workdate;
     this.updaterequestdata.Start_Time =
       this.RequestForm.controls["StartTime"].value;
@@ -4159,6 +4194,9 @@ export class NewRequestComponent implements OnInit {
     }
 
     this.RequestForm.controls["Startdate"].setValue(data["Working_Date"]);
+    this.RequestForm.controls["night_shift"].setValue(data["night_shift"]);
+    this.RequestForm.controls["newWorkDate"].setValue(data["new_date"]);
+    this.RequestForm.controls["new_end_time"].setValue(data["new_end_time"]);
     this.RequestForm.controls["Tools"].setValue(data["Tools"]);
     this.RequestForm.controls["peopleinvalidcount"].setValue(
       data["Number_Of_Workers"]
@@ -4365,7 +4403,13 @@ export class NewRequestComponent implements OnInit {
     } else {
       this.iscmsyes = false;
     }
-
+    
+    if(data["night_shift"] == 1) {
+      this.isnightshiftyes = true;
+    } else {
+      this.isnightshiftyes = false;
+    }
+    
     if (data["Hot_work"] == 1) {
       console.log('sdfsdfds');
       this.ishotworkyes = true;
