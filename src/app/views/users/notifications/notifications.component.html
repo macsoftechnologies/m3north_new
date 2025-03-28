@@ -28,15 +28,15 @@
     {{ row?.building_name }}
   </ng-template>
 </ngx-datatable-column>
+<ngx-datatable-column name="Level" [flexGrow]="1" [width]="20">
+  <ng-template let-row="row" ngx-datatable-cell-template>
+    {{ row?.Room_Type }}
+  </ng-template>
+</ngx-datatable-column>
 
 <ngx-datatable-column name="Area" [flexGrow]="1" [width]="50">
   <ng-template let-row="row" ngx-datatable-cell-template>
     {{ row?.Room_Nos }}
-  </ng-template>
-</ngx-datatable-column>
-<ngx-datatable-column name="Level" [flexGrow]="1" [width]="20">
-  <ng-template let-row="row" ngx-datatable-cell-template>
-    {{ row?.Room_Type }}
   </ng-template>
 </ngx-datatable-column>
 <ngx-datatable-column name="Working Date" [flexGrow]="1">
@@ -44,6 +44,20 @@
     {{ row?.Working_Date }}
   </ng-template>
 </ngx-datatable-column>
+
+<ngx-datatable-column name="Night Shift" [flexGrow]="1" [width]="20">
+  <ng-template let-row="row" ngx-datatable-cell-template>
+    <p *ngIf="row?.night_shift == 1">Yes</p>
+    <p *ngIf="row?.night_shift != 1">No</p>
+  </ng-template>
+</ngx-datatable-column>
+
+<ngx-datatable-column name="New Date" [flexGrow]="1" [width]="50">
+  <ng-template let-row="row" ngx-datatable-cell-template>
+    {{ row?.new_date }}
+  </ng-template>
+</ngx-datatable-column>
+
 <ngx-datatable-column name="Status" [flexGrow]="1">
   <ng-template let-row="row" ngx-datatable-cell-template>
     {{ row?.Request_status }}

@@ -1164,6 +1164,49 @@ export class ListRequestComponent implements OnInit {
     this.route.navigateByUrl('/user/new-request');
   }
 
+  isValidDateFormat(date: string | null | undefined): boolean {
+    if (!date) return false; // Handle null, undefined, and empty string
+    return /^\d{4}-\d{2}-\d{2}$/.test(date) && date !== '0000-00-00';
+  }
+  
+  getSelectedDelete() {
+    this.selected.forEach((x) => {
+        this.selectedRequestIds.push(x['id']);
+    });
+    let title = 'Delete Multiple Request';
+    let dialogRef: MatDialogRef<any> = this.dialog.open(DeleteOptionComponent, {
+      width: '300px',
+      height: '150px',
+      disableClose: false,
+      data: { title: title, payload: this.selectedRequestIds, type: 'multirequest' },
+    });
+    dialogRef.afterClosed().subscribe((res) => {
+      this.Countresult.length = 0;
+      this.selectedRequestIds.length = 0;
+      this.selectedRequestIds = [];
+      if (this.api == 'SearchRequest') {
+        // console.log("search API");
+        // this.api = 'SearchRequest';
+        // this.items = res[0]['data'];
+        // this.paginationCount = res[1]['count'];
+        const mainValue = this.currentPage - 1;
+        this.startValue = mainValue * 30 + 1;
+        this.search(event);
+        // console.log("NUMMBER", this.currentPage)
+        // console.log("Start Value", this.startValue)
+      }
+      else {
+        const mainValue = this.currentPage - 1;
+        this.startValue = mainValue * 30 + 1;
+        this.getPermits(this.currentPage, this.startValue);
+        console.log("NUMMBER", this.currentPage)
+        console.log("Start Value", this.startValue);
+        // window.location.reload();
+        this.selected.length = 0;
+      }
+    });
+  }
+
   Getselected(event) {
     console.log(event);
     this.selected.forEach((x) => {

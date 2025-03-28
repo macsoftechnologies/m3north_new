@@ -216,7 +216,7 @@
             <mat-grid-tile>
               <div class="upload-div-sty">
                 <input #csvInput hidden="true" type="file" multiple onclick="this.value=null"
-                  (change)="csvInputChange($event)" accept=".pdf" />
+                  (change)="csvInputChange($event)" accept=".pdf,.doc,.docx,.txt,.xls,.xlsx" />
                 <button mat-flat-button class="logo-btn-sty" color="primary" (click)="csvInput.click()">Add RAMS
                   Files</button>
                 <span *ngIf="!editform">{{images?.name}}</span>

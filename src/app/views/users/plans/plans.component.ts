@@ -528,8 +528,8 @@ export class PlansComponent implements OnInit {
           {
             PermitNo: x["PermitNo"], ContractorName: x["subContractorName"], Sub_Contractor_Name: x['new_sub_contractor'], Building_Name: x["building_name"], Level: x["Room_Type"],
             Room_Nos: x['Room_Nos'], Activity: x["Activity"],description_of_activity: x["description_of_activity"], Rams_Number: x["rams_number"],HRAs: this.printHRAS(x),Auth:x[""],Comment: x[""],
-            Start_Time: x["Start_Time"], End_Time: x["End_Time"], Request_status: x["Request_status"],
-            Notes: x["Notes"], Working_Date: x["Working_Date"], Day: this.days_Names[day], 
+            Start_Time: x["Start_Time"], End_Time: x["End_Time"], Night_Shift: this.nightShiftCheck(x), New_End_Time: x["new_end_time"], Request_status: x["Request_status"],
+            Notes: x["Notes"], Working_Date: x["Working_Date"], Day: this.days_Names[day], New_Date: x["new_date"], New_Day: this.findNewDay(x),
           }
         )
       });
@@ -547,6 +547,19 @@ export class PlansComponent implements OnInit {
     this.ete.exportExcel(reportData);
   }
 
+  nightShiftCheck(rows) {
+    return rows["night_shift"] == 1 ? 'Yes' : 'No';
+  }
+
+  findNewDay(row) {
+    if (row["new_date"] && row["new_date"] !== "00-00-0000") {
+      let newDate = new Date(row["new_date"]);
+      let newDayIndex = newDate.getDay();
+      return this.days_Names[newDayIndex];
+    }
+    return ""; // Return empty string if new_date is invalid
+  }
+  
   printHRAS(tableData) {
     let hrasValues = [];
     Object.entries(tableData).forEach(([key, value]) => {

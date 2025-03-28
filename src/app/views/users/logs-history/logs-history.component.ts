@@ -56,6 +56,12 @@ export class LogsHistoryComponent implements OnInit {
   //   });
   // }
 
+  isValidDateFormat(date: string | null | undefined): boolean {
+    if (!date) return false; // Handle null, undefined, and empty string
+    return /^\d{4}-\d{2}-\d{2}$/.test(date) && date !== '0000-00-00';
+  }
+  
+
   getPermits(page,value) {
     this.pagedatainfo = {
       LoginType: this.isUserLoggedIn.role,

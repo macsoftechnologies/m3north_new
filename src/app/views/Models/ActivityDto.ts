@@ -13,3 +13,7 @@ export class DeleteActivityDto
 {
     id:string;
 }
+export class DeleteMultiActivityDto
+{
+    ids:[];
+}

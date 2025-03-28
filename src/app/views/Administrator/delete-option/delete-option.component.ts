@@ -2,7 +2,7 @@ import { Component, OnInit, Optional, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivityService } from 'app/shared/services/activity.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DeleteActivityDto } from 'app/views/Models/ActivityDto';
+import { DeleteActivityDto, DeleteMultiActivityDto } from 'app/views/Models/ActivityDto';
 import { SafetyprecautionService } from 'app/shared/services/safetyprecautionservice';
 import { SubcontractorService } from 'app/shared/services/subcontractor.service';
 import { EmployeeService } from 'app/shared/services/employee.service';
@@ -20,6 +20,9 @@ export class DeleteOptionComponent implements OnInit {
   Dto:DeleteActivityDto={
     id:null
   }
+  MultiDto: DeleteMultiActivityDto= {
+    ids: []
+  }
   constructor(@Optional() @Inject(MAT_DIALOG_DATA) public data: any[],private _snackBar: MatSnackBar,
   private activityservice:ActivityService,
   private subcontrservice:SubcontractorService,
@@ -36,6 +39,7 @@ export class DeleteOptionComponent implements OnInit {
   Delete()
   {
     this.Dto.id=this.data["payload"]['id'];
+    this.MultiDto.ids = this.data["payload"];
     if(this.data['type']=='activity')
     {
          this.activityservice.DeleteActivity(this.Dto).subscribe(res=>
@@ -102,6 +106,14 @@ export class DeleteOptionComponent implements OnInit {
 
           });
     }
+    else if(this.data['type']=='multirequest')
+      {
+           this.reqservice.DeleteMultiRequest(this.MultiDto).subscribe(res=>
+            {
+              this.openSnackBar('Request Deleted Successfully');
+  
+            });
+      }
     else if(this.data['type']=='docs')
     {
          this.subcontrservice.DeleteSubContractorDocs(this.Dto).subscribe(res=>

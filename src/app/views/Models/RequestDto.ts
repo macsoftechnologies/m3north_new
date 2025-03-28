@@ -330,6 +330,9 @@ export class EditRequestDto {
 export class DeleteRequestDto {
     id: string;
 }
+export class DeleteMultiRequestDto {
+    ids: [];
+}
 
 export class UpdateRequestStatusListDto {
     Request_status: string;

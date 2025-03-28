@@ -57,6 +57,25 @@
           {{ row?.Working_Date | date: "mediumDate" }}
         </ng-template>
       </ngx-datatable-column>
+      
+      <ngx-datatable-column name="Night Shift" [flexGrow]="1" [width]="20">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <p *ngIf="row?.night_shift == 1">Yes</p>
+          <p *ngIf="row?.night_shift != 1">No</p>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column name="New Date" [flexGrow]="1" [width]="50">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <p *ngIf="isValidDateFormat(row?.new_date); else emptyDate">
+            {{ row?.new_date | date: "mediumDate" }}
+          </p>
+          <ng-template #emptyDate>
+            <span> -- </span> <!-- Placeholder for missing or invalid dates -->
+          </ng-template>
+          
+        </ng-template>
+      </ngx-datatable-column>
       <!-- <ngx-datatable-column name="Time" [flexGrow]="1" [width]="50">
        <ng-template let-row="row" ngx-datatable-cell-template>
          {{ row?.Start_Time }} - {{ row?.End_Time }}

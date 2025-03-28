@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'environments/environment';
-import { RequestDto, EditRequestDto, DeleteRequestDto, UpdateRequestStatusListDto, CopyRequestDto, UpdateClose_Status, RequestsbyId, RequestBySubcontractorId } from 'app/views/Models/RequestDto';
+import { RequestDto, EditRequestDto, DeleteRequestDto, UpdateRequestStatusListDto, CopyRequestDto, UpdateClose_Status, RequestsbyId, RequestBySubcontractorId, DeleteMultiRequestDto } from 'app/views/Models/RequestDto';
 import { PlansDto } from 'app/views/Models/PlansDto';
 import { SearchRequestDto } from 'app/views/Models/SearchRequestDto';
 import { UpdateNotes, UpdateSafety, UpdateTime } from 'app/views/Models/MultiRequestUpdateDto';
@@ -7828,6 +7828,9 @@ export class RequestService {
   }
   public DeleteRequest(req: DeleteRequestDto): Observable<any> {
     return this.http.post<any>(environment.API_URL + 'request/delete.php', req);
+  }
+  public DeleteMultiRequest(req: DeleteMultiRequestDto): Observable<any> {
+    return this.http.post<any>(environment.API_URL + 'request/multipledelete.php', req);
   }
   public GetPlans(req: PlansDto): Observable<any> {
     return this.http.post<any>(environment.API_URL + 'request/planslist.php', req);

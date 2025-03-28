@@ -221,6 +221,9 @@
           <mat-option value="notes"> Notes </mat-option>
         </mat-select>
       </mat-form-field>
+      <button mat-raised-button class="span-delete" *ngIf="selected.length > 0" (click)="getSelectedDelete()">
+        Delete
+      </button>
     </div>
 
     <!-- ngx data table used to be there -->
@@ -239,7 +242,7 @@
         </ng-template>
         <ng-template [width]="50" class="chcks-sty" ngx-datatable-cell-template let-value="value"
           let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn" let-row="row">
-          <input [width]="50" type="checkbox" [checked]="isSelected" *ngIf="row.Request_status == 'Hold'"
+          <input [width]="50" type="checkbox" [checked]="isSelected" *ngIf="row.Request_status == 'Hold' || 'Rejected' || 'Closed' || 'Cancelled'"
             (change)="onCheckboxChangeFn($event)" />
         </ng-template>
       </ngx-datatable-column>
@@ -319,6 +322,29 @@
           {{ row?.Start_Time }} - {{ row?.End_Time }}
         </ng-template>
       </ngx-datatable-column>
+      <ngx-datatable-column name="Night Shift" [flexGrow]="1" [width]="50">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <p *ngIf="row?.night_shift == 1">Yes</p>
+          <p *ngIf="row?.night_shift !== 1">No</p>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column name="New Date" [flexGrow]="1" [width]="50">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <p *ngIf="isValidDateFormat(row?.new_date); else emptyDate">
+            {{ row?.new_date | date: "mediumDate" }}
+          </p>
+          <ng-template #emptyDate>
+            <span> -- </span> <!-- Placeholder for missing or invalid dates -->
+          </ng-template>
+        </ng-template>
+      </ngx-datatable-column>
+      
+      <ngx-datatable-column name="New End Time" [flexGrow]="1" [width]="50">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row?.new_end_time }}
+        </ng-template>
+      </ngx-datatable-column>
       <ngx-datatable-column name="Status" [flexGrow]="1" [width]="50" *ngIf="(this.userdata['role'] !== 'Observer')">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <mat-chip [ngClass]="{ 'status_draft': row?.Request_status != 'Hold'}" mat-sm-chip [color]="'primary'"
@@ -363,8 +389,33 @@
 
       <ngx-datatable-column name="Status" [flexGrow]="1" [width]="50" *ngIf="(this.userdata['role'] == 'Observer')">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <mat-chip mat-sm-chip [color]="'primary'" [disabled]="true">
+          <!-- <mat-chip mat-sm-chip [color]="'primary'" [disabled]="true">
+            {{ row?.Request_status }}</mat-chip> -->
+            <mat-chip [ngClass]="{ 'status_hold': row?.Request_status == 'Hold'}" mat-sm-chip [color]="'primary'"
+            *ngIf="row.Request_status == 'Hold'">
             {{ row?.Request_status }}</mat-chip>
+            <mat-chip [ngClass]="{ 'status_opened': row?.Request_status == 'Opened'}" mat-sm-chip [color]="'primary'"
+            *ngIf="row.Request_status == 'Opened'">
+            {{ row?.Request_status }}</mat-chip>
+            <mat-chip [ngClass]="{ 'status_approved': row?.Request_status == 'Approved'}" mat-sm-chip [color]="'primary'"
+            *ngIf="row.Request_status == 'Approved'">
+            {{ row?.Request_status }}</mat-chip>
+            <mat-chip [ngClass]="{ 'status_closed': row?.Request_status == 'Closed'}" mat-sm-chip [color]="'primary'"
+            *ngIf="row.Request_status == 'Closed'">
+            {{ row?.Request_status }}
+          </mat-chip>
+          <mat-chip [ngClass]="{ 'status_rejected': row?.Request_status == 'Rejected'}" mat-sm-chip [color]="'primary'"
+            *ngIf="row.Request_status == 'Rejected'">
+            {{ row?.Request_status }}
+          </mat-chip>
+          <mat-chip [ngClass]="{ 'status_cancelled': row?.Request_status == 'Cancelled'}" mat-sm-chip [color]="'primary'"
+            *ngIf="row.Request_status == 'Cancelled'">
+            {{ row?.Request_status }}
+          </mat-chip>
+          <mat-chip [ngClass]="{ 'status_draft': row?.Request_status == 'Draft'}" mat-sm-chip [color]="'primary'"
+            *ngIf="row.Request_status == 'Draft'">
+            {{ row?.Request_status }}
+          </mat-chip>
         </ng-template>
       </ngx-datatable-column>
 
