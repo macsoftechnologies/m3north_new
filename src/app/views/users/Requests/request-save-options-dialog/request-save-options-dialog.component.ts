@@ -27,7 +27,8 @@ export class RequestSaveOptionsDialogComponent implements OnInit {
       Request_status: null,
       id: null,
       userId: null,
-      ConM_initials: null
+      ConM_initials: null,
+      reject_reason: null,
     }
   userData: any = {};
   statusApprovedForm: any;
@@ -42,7 +43,7 @@ export class RequestSaveOptionsDialogComponent implements OnInit {
     
     this.statusApprovedForm = new FormGroup({
       ConM_initials: new FormControl('', Validators.required),
-
+      reject_reason: new FormControl('', Validators.required),
     })
   }
 
@@ -64,8 +65,11 @@ export class RequestSaveOptionsDialogComponent implements OnInit {
     this.UpdateRequestStatusList.id = this.req_ids;
     this.UpdateRequestStatusList.userId = this.userData["id"];
 
-    if (this.statusApprovedForm.valid) {
+    if (this.statusApprovedForm.get('ConM_initials').valid) {
       this.UpdateRequestStatusList.ConM_initials = this.statusApprovedForm.value.ConM_initials;
+    }
+    if(this.statusApprovedForm.get('reject_reason').valid) {
+      this.UpdateRequestStatusList.reject_reason = this.statusApprovedForm.value.reject_reason;
     }
 
     this.reqservice.UpdateListStatusRequest(this.UpdateRequestStatusList).subscribe(res => {

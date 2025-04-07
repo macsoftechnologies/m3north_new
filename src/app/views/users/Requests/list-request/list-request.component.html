@@ -221,7 +221,7 @@
           <mat-option value="notes"> Notes </mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-raised-button class="span-delete" *ngIf="selected.length > 0" (click)="getSelectedDelete()">
+      <button mat-raised-button class="span-delete" *ngIf="selected.length > 0 && this.userdata['role'] == 'Admin'" (click)="getSelectedDelete()">
         Delete
       </button>
     </div>

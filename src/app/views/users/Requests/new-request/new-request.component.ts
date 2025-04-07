@@ -387,7 +387,7 @@ export class NewRequestComponent implements OnInit {
     End_Time: null,
     Site_Id: null,
     night_shift: null,
-    new_date: null,
+    new_date: "",
     new_end_time: null,
     Building_Id: null,
     Floor_Id: null,
@@ -698,7 +698,7 @@ export class NewRequestComponent implements OnInit {
     excavation_shoring: null,
     rams_number: null,
     night_shift: null,
-    new_date: null,
+    new_date: "",
     new_end_time: null,
   };
 
@@ -3227,15 +3227,21 @@ export class NewRequestComponent implements OnInit {
       //   "yyyy-MM-dd"
       // );
       let startDateValue = this.RequestForm.controls["Startdate"].value;
-      let newDateValue = this.RequestForm.controls["newWorkDate"].value;
       // Check if the start date exists and is valid
       let workdate = startDateValue != '0000-00-00' ? this.datePipe.transform(startDateValue, "yyyy-MM-dd")
         : null;
-        let newworkdate = newDateValue != '0000-00-00' ? this.datePipe.transform(newDateValue, "yyyy-MM-dd")
-        : null;
+        
         this.updaterequestdata.night_shift =
         this.RequestForm.controls["night_shift"].value;
-        this.updaterequestdata.new_date = newworkdate;
+        // this.updaterequestdata.new_date = newworkdate;
+        if(this.isValidDateFormat(this.RequestForm.controls["newWorkDate"].value)) {    
+        let newDateValue = this.RequestForm.controls["newWorkDate"].value;
+          let newworkdate = newDateValue != '0000-00-00' ? this.datePipe.transform(newDateValue, "yyyy-MM-dd")
+        : null;
+          this.updaterequestdata.new_date = newworkdate;
+        } else {
+          this.updaterequestdata.new_date = "";
+        }
         this.updaterequestdata.new_end_time =
         this.RequestForm.controls["new_end_time"].value;
       this.updaterequestdata.Working_Date = workdate;
@@ -3451,6 +3457,11 @@ export class NewRequestComponent implements OnInit {
     }
   }
 
+  isValidDateFormat(date: string | null | undefined): boolean {
+    if (!date) return false; // Handle null, undefined, and empty string
+    return /^\d{4}-\d{2}-\d{2}$/.test(date) && date !== '0000-00-00';
+  }
+
   UpdateRequestDraftToHold(data) {
     console.log("draft", data)
     var badarray = [];
@@ -3526,13 +3537,17 @@ export class NewRequestComponent implements OnInit {
       this.RequestForm.controls["Startdate"].value,
       "yyyy-MM-dd"
     );
-    let newworkdate = this.datePipe.transform(
-      this.RequestForm.controls["newWorkDate"].value,
-      "yyyy-MM-dd"
-    );
     this.updaterequestdata.night_shift =
       this.RequestForm.controls["night_shift"].value;
-      this.updaterequestdata.new_date = newworkdate;
+      if(this.isValidDateFormat(this.RequestForm.controls["newWorkDate"].value)) {
+        let newworkdate = this.datePipe.transform(
+          this.RequestForm.controls["newWorkDate"].value,
+          "yyyy-MM-dd"
+        );
+        this.updaterequestdata.new_date = newworkdate;
+      } else {
+        this.updaterequestdata.new_date = "";
+      }
       this.updaterequestdata.new_end_time =
       this.RequestForm.controls["new_end_time"].value;
     this.updaterequestdata.Working_Date = workdate;

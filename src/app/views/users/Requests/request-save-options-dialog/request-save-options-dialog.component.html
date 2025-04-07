@@ -20,12 +20,28 @@
     </div>
 </div>
 
-<div *ngIf="this.status == 'Rejected'">
+<div *ngIf="this.status == 'Rejected' && req_ids.length > 0">
 
     <div mat-dialog-content>
         <h3> {{title}} </h3>
     </div>
 
+    <form [formGroup]="statusApprovedForm">
+        <mat-grid-list cols="2" rowHeight="80px">
+            <mat-grid-tile>
+                <mat-form-field class="full-width">
+                    <mat-label>Reason For Rejecting</mat-label>
+                    <input matInput formControlName="reject_reason"
+                        [class.is-invalid]="statusApprovedForm.get('reject_reason').invalid && statusApprovedForm.get('reject_reason').touched" />
+                    <mat-error class="error-message"
+                        *ngIf="statusApprovedForm.get('reject_reason').invalid && statusApprovedForm.get('reject_reason').touched">Please
+                        Select
+                    </mat-error>
+
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </form>
 
     <div mat-dialog-actions *ngIf="!Listitemsstatus">
         <button class="butns-grp" mat-raised-button color="primary" mat-dialog-close
@@ -37,13 +53,14 @@
     </div>
 
     <div mat-dialog-actions *ngIf="Listitemsstatus">
-        <button class="butns-grp" mat-raised-button color="primary" mat-dialog-close
+        <button class="butns-grp" mat-raised-button color="primary" mat-dialog-close  [disabled]="statusApprovedForm.get('reject_reason').invalid ||
+          statusApprovedForm.get('reject_reason').value.trim() === ''"
             (click)="ChangeListStaus('Yes')">Yes</button>
         <button class="butns-grp" mat-raised-button color="primary" mat-dialog-close>No</button>
     </div>
 </div>
 
-<div *ngIf="this.status == 'Approved'">
+<div *ngIf="this.status == 'Approved' && req_ids.length > 0">
 
     <div mat-dialog-content>
         <h3>This activity has been coordinated and approved by ConM/Site HSE.</h3>
@@ -84,8 +101,14 @@
     </div>
 
     <div mat-dialog-actions *ngIf="Listitemsstatus">
-        <button class="butns-grp" mat-raised-button color="primary" mat-dialog-close [disabled]="!statusApprovedForm.valid"
+        <button class="butns-grp" mat-raised-button color="primary" mat-dialog-close [disabled]="statusApprovedForm.get('ConM_initials').invalid ||
+          statusApprovedForm.get('ConM_initials').value.trim() === ''"
             (click)="ChangeListStaus('Yes')">Approve</button>
-        <button class="butns-grp" mat-raised-button color="primary" mat-dialog-close>Reject</button>
+    </div>
+</div>
+
+<div *ngIf="(this.status == 'Approved' || this.status == 'Rejected') && req_ids.length == 0">
+    <div mat-dialog-content>
+        <h3>Please select Permits</h3>
     </div>
 </div>

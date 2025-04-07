@@ -413,13 +413,13 @@ export class NavigationService {
         { name: "List Request", state: "user/list-request", icon: "list" }
       ]
     },
-    {
-      name: "Docs",
-      type: "link",
-      tooltip: "Mydocs",
-      icon: "notifications", 
-      state: "user/mydocs"
-    },
+    // {
+    //   name: "Docs",
+    //   type: "link",
+    //   tooltip: "Mydocs",
+    //   icon: "notifications", 
+    //   state: "user/mydocs"
+    // },
     {
       name: "Reports",
       type: "link",

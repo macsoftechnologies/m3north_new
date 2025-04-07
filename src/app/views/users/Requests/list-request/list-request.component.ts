@@ -555,7 +555,16 @@ export class ListRequestComponent implements OnInit {
         }
       }
 
-      this.Contractors = res[2]['subcontractors'];
+      if (res[2] && Array.isArray(res[2]['subcontractors'])) {
+        this.Contractors = res[2]['subcontractors']
+          .filter(subcontractor => subcontractor?.subContractorName
+          ) // Remove undefined/null values
+          .sort((a, b) => a.subContractorName
+          .localeCompare(b.subContractorName
+          ));
+      } else {
+        this.Contractors = [];
+      }
       this.Sites = res[0]['data'];
       this.Getbuilding(this.Sites[0]['site_id']);
       this.Typeofactivitys = res[3]['activities'];
