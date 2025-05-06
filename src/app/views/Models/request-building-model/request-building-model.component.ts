@@ -19,6 +19,22 @@ export class RequestBuildingModelComponent implements OnInit {
     let selectedBlockData = this.data.selectFloorBlocks.find(item => (item.planType == this.data.floor.planType) && (item.floorName == this.data.floor.name))
     console.log(selectedBlockData, "selectedBlockData")
     // external areas start
+    if (this.data.floor.name == 'CP EGE' && this.data.floor.planType == 'External Areas') {
+
+      this.floorBlock = [
+        {
+          value: 'CP.EGE',
+          className: "CP_EGE_Red_Zones-1",
+          isSelected: false
+        },
+      ]
+      if (selectedBlockData) {
+        if ((selectedBlockData.floorName == this.data.floor.name) && (selectedBlockData.planType == this.data.floor.planType)) {
+          console.log(selectedBlockData, "1")
+          this.floorBlock = selectedBlockData.selectedBlock;
+        }
+      }
+    }
     if (this.data.floor.name == 'Area CT' && this.data.floor.planType == 'External Areas') {
 
       this.floorBlock = [

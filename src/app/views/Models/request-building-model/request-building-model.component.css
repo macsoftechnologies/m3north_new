@@ -11,6 +11,12 @@ mat-checkbox ::ng-deep .mat-checkbox-inner-container {
   border-radius: 5px;
   cursor: pointer;
 }
+.CP_EGE_Red_Zones-1{
+  position: absolute;
+  z-index: 9999;
+  top: 25%;
+  left: 48%;
+}
 
 .CT_Dark_Red_Zones-1 {
   position: absolute;

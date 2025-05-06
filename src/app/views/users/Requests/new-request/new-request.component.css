@@ -4080,6 +4080,16 @@ input {
 }
 
 /* // new css for m3 north */
+
+.CP_EGE{
+  position: absolute;
+  top: 5%;
+  left: 12.5%;
+  z-index: 9999;
+  height: 47px;
+  width: 121px;
+  padding: 0px;
+}
 .CT_Dark {
   position: absolute;
   top: 8%;
@@ -11450,6 +11460,16 @@ input {
 }
 
 @media (min-width: 1600px) and (max-width: 1750px) {
+
+  .CP_EGE{
+    position: absolute;
+    top: 5%;
+    left: 12.5%;
+    z-index: 9999;
+    height: 54px;
+    width: 138px;
+    padding: 0px;
+}
   .CT_Dark {
     position: absolute;
     top: 8%;
@@ -11543,6 +11563,15 @@ input {
 }
 
 @media (min-width: 1750px) and (max-width: 1850px) {
+  .CP_EGE{
+    position: absolute;
+    top: 5%;
+    left: 12.5%;
+    z-index: 9999;
+    height: 57px;
+    width: 148px;
+    padding: 0px;
+}
   .CT_Dark {
     position: absolute;
     top: 8%;
@@ -11636,6 +11665,16 @@ input {
 }
 
 @media (min-width: 1850px) and (max-width: 2000px) {
+   .CP_EGE{
+    position: absolute;
+    top: 5%;
+    left: 12.5%;
+    z-index: 9999;
+    height: 61px;
+    width: 156px;
+    padding: 0px;
+}
+
   .CT_Dark {
     position: absolute;
     top: 8%;
@@ -11729,6 +11768,15 @@ input {
 }
 
 @media (min-width: 2000px) and (max-width: 2100px) {
+   .CP_EGE{
+    position: absolute;
+    top: 5%;
+    left: 12.5%;
+    z-index: 9999;
+    height: 68px;
+    width: 172px;
+    padding: 0px;
+}
   .CT_Dark {
     position: absolute;
     top: 8%;
@@ -11823,6 +11871,15 @@ input {
 }
 
 @media (min-width: 2100px) and (max-width: 2200px) {
+   .CP_EGE{
+    position: absolute;
+    top: 5%;
+    left: 12.5%;
+    z-index: 9999;
+    height: 68px;
+     width: 181px;
+    padding: 0px;
+}
   .CT_Dark {
     position: absolute;
     top: 8%;
@@ -11917,6 +11974,15 @@ input {
 }
 
 @media (min-width: 2200px) and (max-width: 2300px) {
+   .CP_EGE{
+    position: absolute;
+    top: 5%;
+    left: 12.5%;
+    z-index: 9999;
+    height: 74px;
+    width: 191px;
+    padding: 0px;
+}
   .CT_Dark {
     position: absolute;
     top: 8%;
@@ -12011,6 +12077,15 @@ input {
 }
 
 @media (min-width: 2300px) and (max-width: 2400px) {
+   .CP_EGE{
+    position: absolute;
+    top: 5%;
+    left: 12.5%;
+    z-index: 9999;
+    height: 77px;
+    width: 200px;
+    padding: 0px;
+}
   .CT_Dark {
     position: absolute;
     top: 8%;
@@ -12105,6 +12180,15 @@ input {
 }
 
 @media (min-width: 2400px) and (max-width: 2500px) {
+   .CP_EGE{
+    position: absolute;
+    top: 5%;
+    left: 12.5%;
+    z-index: 9999;
+    height: 81px;
+    width: 207px;
+    padding: 0px;
+}
   .CT_Dark {
     position: absolute;
     top: 8%;
@@ -12199,6 +12283,15 @@ input {
 }
 
 @media (min-width: 2500px) and (max-width: 2600px) {
+   .CP_EGE{
+    position: absolute;
+    top: 5%;
+    left: 12.5%;
+    z-index: 9999;
+    height: 85px;
+    width: 217px;
+    padding: 0px;
+}
   .CT_Dark {
     position: absolute;
     top: 8%;
@@ -12293,6 +12386,15 @@ input {
 }
 
 @media (min-width: 2600px) and (max-width: 2700px) {
+   .CP_EGE{
+    position: absolute;
+    top: 5%;
+    left: 12.5%;
+    z-index: 9999;
+    height: 88px;
+    width: 228px;
+    padding: 0px;
+}
   .CT_Dark {
     position: absolute;
     top: 8%;
@@ -12386,101 +12488,17 @@ input {
   }
 }
 
-@media (min-width: 2600px) and (max-width: 2700px) {
-  .CT_Dark {
-    position: absolute;
-    top: 8%;
-    left: 27%;
-    z-index: 9999;
-    height: 42px;
-    width: 703px;
-    padding: 0px;
-  }
-
-  .area-ma-1 {
-    position: absolute;
-    bottom: 24%;
-    left: 23.4%;
-    z-index: 9999;
-    height: 411px;
-    width: 221px;
-    padding: 0px;
-  }
-
-  .area-ma-2 {
-    position: absolute;
-    bottom: 23.5%;
-    left: 33%;
-    z-index: 9999;
-    height: 406px;
-    width: 206px;
-    padding: 0px;
-  }
-
-  .area-ma-3 {
-    position: absolute;
-    bottom: 24%;
-    left: 43%;
-    z-index: 9999;
-    height: 412px;
-    width: 170px;
-    padding: 0px;
-  }
-
-  .area-mb {
-    position: absolute;
-    top: 13%;
-    left: 40.5%;
-    z-index: 9999;
-    height: 342px;
-    width: 172px;
-    padding: 0px;
-  }
-
-  .area-mu {
-    position: absolute;
-    top: 13%;
-    left: 33.5%;
-    z-index: 9999;
-    height: 342px;
-    width: 145px;
-    padding: 0px;
-  }
-
-  .area-mt-ms {
-    position: absolute;
-    top: 13%;
-    left: 23.5%;
-    z-index: 9999;
-    height: 343px;
-    width: 227px;
-    padding: 0px;
-  }
-
-  .Welfare_zones {
-    position: absolute;
-    top: 13%;
-    right: 43.5%;
-    z-index: 9999;
-    height: 343px;
-    width: 189px;
-    padding: 0px;
-  }
-
-  .Roads {
-    position: absolute;
-    top: 9%;
-    left: 40px;
-    right: 82px;
-    left: 22.8%;
-    z-index: 9999;
-    height: 823px;
-    width: 15px;
-    min-width: 20px;
-  }
-}
 
 @media (min-width: 2700px) and (max-width: 2800px) {
+   .CP_EGE{
+    position: absolute;
+    top: 5%;
+    left: 12.5%;
+    z-index: 9999;
+    height: 92px;
+    width: 236px;
+    padding: 0px;
+}
   .CT_Dark {
     position: absolute;
     top: 8%;
@@ -12575,6 +12593,15 @@ input {
 }
 
 @media (min-width: 2800px) and (max-width: 2900px) {
+   .CP_EGE{
+    position: absolute;
+    top: 5%;
+    left: 12.5%;
+    z-index: 9999;
+    height: 96px;
+    width: 245px;
+    padding: 0px;
+}
   .CT_Dark {
     position: absolute;
     top: 8%;
@@ -12669,6 +12696,15 @@ input {
 }
 
 @media (min-width: 2900px) and (max-width: 3000px) {
+   .CP_EGE{
+    position: absolute;
+    top: 5%;
+    left: 12.5%;
+    z-index: 9999;
+    height: 98px;
+    width: 255px;
+    padding: 0px;
+}
   .CT_Dark {
     position: absolute;
     top: 8%;

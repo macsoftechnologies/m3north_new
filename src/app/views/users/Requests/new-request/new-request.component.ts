@@ -1940,6 +1940,7 @@ export class NewRequestComponent implements OnInit {
           this.planType = "External Areas";
           this.pdfSrc = "assets/images/plans/external/External.pdf";
           this.blocks = [
+            { name: "CP EGE", pdfSrc: "assets/images/plans/external/external-zones/CP_EGE.pdf", className: 'CP_EGE', planType: 'External Areas' },
             { name: "Area CT", pdfSrc: "assets/images/plans/external/external-zones/CT_Dark.pdf", className: 'CT_Dark', planType: 'External Areas' },
             { name: "Area MA-I", pdfSrc: "assets/images/plans/external/external-zones/MA_I.pdf", className: 'area-ma-1', planType: 'External Areas' },
             { name: "Area MA-II", pdfSrc: "assets/images/plans/external/external-zones/MA_II.pdf", className: 'area-ma-2', planType: 'External Areas' },
