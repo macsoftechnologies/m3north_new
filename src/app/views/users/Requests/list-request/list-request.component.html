@@ -156,7 +156,7 @@
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>HRA'S</mat-label>
             <mat-select formControlName="Hras" name="Hras" [multiple]="true">
-              <mat-option>None</mat-option>
+              <mat-option [value]="'none'">None</mat-option>
               <mat-option *ngFor="let hras of getHras" [value]="hras" class="hras-text">
                 <div class="hras-content"> <img src="{{BaseUrl}}{{hras?.image}}" class="hras-image"> {{ hras.label }}
                 </div>
@@ -170,12 +170,11 @@
       </mat-grid-list>
 
       <mat-grid-list cols="2" rowHeight="80px">
-        
         <mat-grid-tile>
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>Task Specific PPE</mat-label>
             <mat-select formControlName="TaskSpecific" name="TaskSpecific" [multiple]="true">
-              <mat-option>None</mat-option>
+              <mat-option  [value]="'none'">None</mat-option>
               <mat-option *ngFor="let getTaskSpecificValues of getTaskSpecific" [value]="getTaskSpecificValues" class="hras-text">
                 <div class="hras-content"> <img src="{{BaseUrl}}{{getTaskSpecificValues?.image}}" class="hras-image"> {{ getTaskSpecificValues.label }}
                 </div>
@@ -274,6 +273,20 @@
             class="logo-img" />
         </ng-template>
       </ngx-datatable-column>
+
+      <ngx-datatable-column name="Request_Date" [flexGrow]="1" [width]="50">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <!-- {{ row?.Working_Date | date: "mediumDate" }} -->
+              <!-- {{ row?.Working_Date | date: "mediumDate" }} -->
+          <p *ngIf="row?.Request_Date != '0000-00-00' ; else emptyDate">
+            {{ row?.Request_Date | date: "mediumDate" }}
+          </p>
+          <ng-template #emptyDate>
+            <p>0000-00-00</p> <!-- Empty content -->
+          </ng-template>
+        </ng-template>
+      </ngx-datatable-column>
+
       <ngx-datatable-column name="Activity" [flexGrow]="1" [width]="50">
         <ng-template let-row="row" ngx-datatable-cell-template>
           {{ row?.Activity }}

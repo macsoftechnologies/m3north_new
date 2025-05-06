@@ -204,6 +204,11 @@ export class PlansComponent implements OnInit {
      'MA.II 2',
      'MA.II 3',
      'MA.II R',
+     'MA.III 0',
+     'MA.III 1',
+     'MA.III 2',
+     'MA.III 3',
+     'MA.III R',
      'MA Basement'
   ];
 
