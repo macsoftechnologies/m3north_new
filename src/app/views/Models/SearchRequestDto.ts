@@ -13,6 +13,8 @@ export class SearchRequestDto
     Start: string;
     End: string;
     Page: string;
+    hras: string;
+    taskSpecificPPE: string;
 }
 
 export class ListRequest

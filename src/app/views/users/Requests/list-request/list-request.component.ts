@@ -364,6 +364,8 @@ export class ListRequestComponent implements OnInit {
     Start: null,
     End: null,
     Page: null,
+    hras: '',
+    taskSpecificPPE: '',
   };
 
   RequestsbyidDto: RequestBySubcontractorId = {
@@ -720,7 +722,8 @@ export class ListRequestComponent implements OnInit {
       this.RequestlistForm.controls['Keyword'].value;
     this.SearchRequest.PermitNo =
       this.RequestlistForm.controls['Permitnumber'].value;
-    this.SearchRequest.Site_Id = this.RequestlistForm.controls['Site'].value;
+    // this.SearchRequest.Site_Id = this.RequestlistForm.controls['Site'].value;
+    this.SearchRequest.Site_Id = '5';
     this.SearchRequest.Building_Id =
       this.RequestlistForm.controls['Building'].value;
     this.SearchRequest.Sub_Contractor_Id =
@@ -742,15 +745,33 @@ export class ListRequestComponent implements OnInit {
 
     if (mydate != null) {
       this.SearchRequest.fromDate = mydate;
+    } 
+    else {
+      this.SearchRequest.fromDate = '';
     }
     if (todate != null) {
       this.SearchRequest.toDate = todate;
+    } 
+    else {
+      this.SearchRequest.toDate = '';
+    }
+    if(this.RequestlistForm.get("Hras").value.includes('none')) {
+      this.SearchRequest.hras = 'none';
+    }
+     else {
+      this.SearchRequest.hras = '';
     }
     if (this.RequestlistForm.get("Hras").value.length > 0 && !this.RequestlistForm.get("Hras").value.includes('none')){
       this.RequestlistForm.get("Hras").value.forEach(item =>{
 
         this.SearchRequest[item.key] = item.value.toString()
       })
+    }
+    if(this.RequestlistForm.get("TaskSpecific").value.includes('none')) {
+      this.SearchRequest.taskSpecificPPE = 'none';
+    }
+     else {
+      this.SearchRequest.taskSpecificPPE = '';
     }
     if (this.RequestlistForm.get("TaskSpecific").value.length > 0 && !this.RequestlistForm.get("TaskSpecific").value.includes('none')){
       this.RequestlistForm.get("TaskSpecific").value.forEach(item =>{
