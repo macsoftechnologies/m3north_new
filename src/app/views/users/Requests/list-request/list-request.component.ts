@@ -1423,7 +1423,8 @@ export class ListRequestComponent implements OnInit {
         this.RequestlistForm.controls['Keyword'].value;
       this.SearchRequest.PermitNo =
         this.RequestlistForm.controls['Permitnumber'].value;
-      this.SearchRequest.Site_Id = this.RequestlistForm.controls['Site'].value;
+      // this.SearchRequest.Site_Id = this.RequestlistForm.controls['Site'].value;
+      this.SearchRequest.Site_Id = '5';
       this.SearchRequest.Building_Id =
         this.RequestlistForm.controls['Building'].value;
       this.SearchRequest.Sub_Contractor_Id =
