@@ -30,7 +30,7 @@ import { MatChipInputEvent } from "@angular/material/chips";
 import { RequestService } from "app/shared/services/request.service";
 import { SubcontractorService } from "app/shared/services/subcontractor.service";
 import { EmployeeService } from "app/shared/services/employee.service";
-import { RequestDto, EditRequestDto } from "app/views/Models/RequestDto";
+import { RequestDto, EditRequestDto, FilesRequestDto } from "app/views/Models/RequestDto";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { JwtAuthService } from "app/shared/services/auth/jwt-auth.service";
 import { PDFDocumentProxy } from "ng2-pdf-viewer";
@@ -102,6 +102,7 @@ export class NewRequestComponent implements OnInit {
   isCraneLiftingyes: boolean = false;
   isLOTOPROCEDUREyes: boolean = false;
   RequestForm: FormGroup;
+  FilesRequestForm: FormGroup;
   beamimg: string = "";
 
   visible = true;
@@ -143,6 +144,8 @@ export class NewRequestComponent implements OnInit {
   @ViewChild("auto") matAutocomplete: MatAutocomplete;
   @ViewChild("roomInput") roomInput: ElementRef<HTMLInputElement>;
   @ViewChild("roomauto") roomatAutocomplete: MatAutocomplete;
+  @ViewChild('csvInput') csvInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('csvInput1') csvInput1!: ElementRef<HTMLInputElement>;
   siteslist: any[] = [];
   buildings: any[] = [];
   floors: any[] = [];
@@ -532,6 +535,13 @@ export class NewRequestComponent implements OnInit {
     createdTime: null,
   };
 
+  
+    filesRequestData: FilesRequestDto = {
+    userId: null,
+    rams_file: null,
+    id: null,
+  }
+
   updaterequestdata: EditRequestDto = {
     userId: null,
     Request_Date: null,
@@ -673,7 +683,7 @@ export class NewRequestComponent implements OnInit {
     visible_clothing: null,
     safety_shoes: null,
     helmet: null,
-    rams_file: null,
+    rams_file: [],
     description_of_activity: null,
     specific_gloves: null,
     eye_protection: null,
@@ -1470,6 +1480,9 @@ export class NewRequestComponent implements OnInit {
   ngOnInit(): void {
 
     // console.log(this.L000)
+         this.FilesRequestForm =  this.fb.group({
+      rams_file: [""],
+    })
 
     this.RequestForm = this.fb.group({
       Requestdate: ["", [Validators.required]],
@@ -1538,7 +1551,7 @@ export class NewRequestComponent implements OnInit {
       LOTOPROCEDURE: [""],
       // new formControl added
       newSubContractor: ["", Validators.required],
-      RAMSFileAttach: [""],
+      RAMSFileAttach: this.fb.array([]),
       floatLabel11: ['', Validators.required],
       floatLabel12: ['', Validators.required],
       floatLabel13: ['', Validators.required],
@@ -1665,7 +1678,7 @@ export class NewRequestComponent implements OnInit {
 
       Room: [null, Validators.required],
       SubContractorname: [""],
-      rams_file: ["",]
+      rams_file: this.fb.control([])
       //Departconfs:this.departconfControl,
       //RequiredDocument:this.RequiredDocumentControl
     },
@@ -1772,6 +1785,14 @@ export class NewRequestComponent implements OnInit {
     this.name = "site";
   }
 
+    
+  triggerFileInput(): void {
+    if (this.editform) {
+      this.csvInput1?.nativeElement.click();
+    } else {
+      this.csvInput?.nativeElement.click();
+    }
+  }
   
   endTimeValidator(control: AbstractControl) {
     const startTime = control.get('StartTime')?.value;
@@ -3227,15 +3248,30 @@ export class NewRequestComponent implements OnInit {
 
     let formData = new FormData();
 
+    // for (const [key, value] of Object.entries(this.Requestdata)) {
+    //   if (key != 'rams_file') {
+    //     formData.append(key, value as string); // Ensure values are strings if needed
+    //   }
+    // }
+
+    // console.log(this.RequestForm.controls["rams_file"].value)
+    // console.log(this.Requestdata.rams_file)
+    // formData.append("rams_file", this.Requestdata.rams_file)
     for (const [key, value] of Object.entries(this.Requestdata)) {
-      if (key != 'rams_file') {
-        formData.append(key, value as string); // Ensure values are strings if needed
+      if (key !== 'rams_file' && value !== null && value !== undefined) {
+        formData.append(key, value as string);
       }
+    }
+    
+    // Then: Append each file under same 'rams_file[]' field
+    if (this.Requestdata.rams_file && this.Requestdata.rams_file.length > 0) {
+      (this.Requestdata.rams_file as File[]).forEach((file: File) => {
+        formData.append('rams_file[]', file);  // same field name again and again
+      });
     }
 
     console.log(this.RequestForm.controls["rams_file"].value)
     console.log(this.Requestdata.rams_file)
-    formData.append("rams_file", this.Requestdata.rams_file)
 
     this.requestsserivies.CreateNewRequest(formData).subscribe(
       (res) => {
@@ -3254,6 +3290,7 @@ export class NewRequestComponent implements OnInit {
       this.RequestForm.get(`${control}`).updateValueAndValidity();
       this.RequestForm.get(`${control}`).markAsTouched();
     });
+    console.log("updatefunction Activted...")
     // console.log(this.NewRequestData, 'editttt')
     // console.log("res checking")
     if (this.RequestForm.valid) {
@@ -3334,21 +3371,27 @@ export class NewRequestComponent implements OnInit {
       //   "yyyy-MM-dd"
       // );
       let startDateValue = this.RequestForm.controls["Startdate"].value;
+      
+      let newDateValue = this.RequestForm.controls["newWorkDate"].value;
       // Check if the start date exists and is valid
       let workdate = startDateValue != '0000-00-00' ? this.datePipe.transform(startDateValue, "yyyy-MM-dd")
         : null;
-        
+          let newworkdate = newDateValue != '0000-00-00' || newDateValue != "" ? this.datePipe.transform(newDateValue, "yyyy-MM-dd")
+        : null;
         this.updaterequestdata.night_shift =
         this.RequestForm.controls["night_shift"].value;
         // this.updaterequestdata.new_date = newworkdate;
-        if(this.isValidDateFormat(this.RequestForm.controls["newWorkDate"].value)) {    
-        let newDateValue = this.RequestForm.controls["newWorkDate"].value;
-          let newworkdate = newDateValue != '0000-00-00' ? this.datePipe.transform(newDateValue, "yyyy-MM-dd")
-        : null;
+        // if(this.isValidDateFormat(this.RequestForm.controls["newWorkDate"].value)) {    
+        // let newDateValue = this.RequestForm.controls["newWorkDate"].value;
+        //   let newworkdate = newDateValue != '0000-00-00' ? this.datePipe.transform(newDateValue, "yyyy-MM-dd")
+        // : null;
+        //   this.updaterequestdata.new_date = newworkdate;
+        // } else {
+        //   this.updaterequestdata.new_date = "";
+        // }
           this.updaterequestdata.new_date = newworkdate;
-        } else {
-          this.updaterequestdata.new_date = "";
-        }
+
+          console.log(".....newdateedit", this.updaterequestdata.new_date);
         this.updaterequestdata.new_end_time =
         this.RequestForm.controls["new_end_time"].value;
       this.updaterequestdata.Working_Date = workdate;
@@ -3539,7 +3582,7 @@ export class NewRequestComponent implements OnInit {
       this.updaterequestdata.Safety_Precautions =
         this.RequestForm.controls["Safetyprecaustion"].value.toString();
 
-      this.updaterequestdata.rams_file = this.RequestForm.controls["rams_file"].value;
+      // this.updaterequestdata.rams_file = this.RequestForm.controls["rams_file"].value;
 
       let formData = new FormData();
 
@@ -3547,7 +3590,7 @@ export class NewRequestComponent implements OnInit {
         formData.append(key, value as string); // Ensure values are strings if needed
       }
 
-      formData.append("rams_file", JSON.stringify(this.updaterequestdata.rams_file))
+      // formData.append("rams_file", JSON.stringify(this.updaterequestdata.rams_file))
 
 
       this.requestsserivies.UpdateRequest(formData as unknown as EditRequestDto).subscribe(
@@ -3561,6 +3604,15 @@ export class NewRequestComponent implements OnInit {
           this.openSnackBar("Something went wrong. Plz try again later...");
         }
       );
+    } else {
+      console.error("Form is invalid. Please check the validation errors.");
+
+  Object.keys(this.RequestForm.controls).forEach((key) => {
+    const control = this.RequestForm.get(key);
+    if (control && control.invalid) {
+      console.error(`Field '${key}' has errors:`, control.errors);
+    }
+  });
     }
   }
 
@@ -3644,17 +3696,22 @@ export class NewRequestComponent implements OnInit {
       this.RequestForm.controls["Startdate"].value,
       "yyyy-MM-dd"
     );
+    let newworkdate = this.datePipe.transform(
+      this.RequestForm.controls["newWorkDate"].value,
+      "yyyy-MM-dd"
+    );
     this.updaterequestdata.night_shift =
       this.RequestForm.controls["night_shift"].value;
-      if(this.isValidDateFormat(this.RequestForm.controls["newWorkDate"].value)) {
-        let newworkdate = this.datePipe.transform(
-          this.RequestForm.controls["newWorkDate"].value,
-          "yyyy-MM-dd"
-        );
-        this.updaterequestdata.new_date = newworkdate;
-      } else {
-        this.updaterequestdata.new_date = "";
-      }
+      // if(this.isValidDateFormat(this.RequestForm.controls["newWorkDate"].value)) {
+      //   let newworkdate = this.datePipe.transform(
+      //     this.RequestForm.controls["newWorkDate"].value,
+      //     "yyyy-MM-dd"
+      //   );
+      //   this.updaterequestdata.new_date = newworkdate;
+      // } else {
+      //   this.updaterequestdata.new_date = "";
+      // }
+      this.updaterequestdata.new_date = newworkdate;
       this.updaterequestdata.new_end_time =
       this.RequestForm.controls["new_end_time"].value;
     this.updaterequestdata.Working_Date = workdate;
@@ -3849,7 +3906,7 @@ export class NewRequestComponent implements OnInit {
     this.updaterequestdata.Safety_Precautions =
       this.RequestForm.controls["Safetyprecaustion"].value.toString();
 
-    this.updaterequestdata.rams_file = this.RequestForm.controls["rams_file"].value;
+    // this.updaterequestdata.rams_file = this.RequestForm.controls["rams_file"].value;
 
     let formData = new FormData();
 
@@ -3857,7 +3914,7 @@ export class NewRequestComponent implements OnInit {
       formData.append(key, value as string); // Ensure values are strings if needed
     }
 
-    formData.append("rams_file", JSON.stringify(this.updaterequestdata.rams_file))
+    // formData.append("rams_file", JSON.stringify(this.updaterequestdata.rams_file))
 
 
     this.requestsserivies.UpdateRequest(formData as unknown as EditRequestDto).subscribe(
@@ -4338,7 +4395,11 @@ export class NewRequestComponent implements OnInit {
     // this.RequestForm.patchValue({ floatLabel11: 1 });
     this.RequestForm.controls["descriptActivity"].setValue(data["description_of_activity"]);
     this.RequestForm.controls["RAMSNumber"].setValue(data["rams_number"]);
-    this.images = { name: data["rams_file"] };
+    // this.images = { name: data["rams_file"] };
+    this.images = data.files.map(file => ({
+      name: file.rams_file, 
+      ...file              
+    })); 
     console.log(this.images['name'], 'img')
     this.RequestForm.controls["other_ppe"].setValue(data["other_ppe"]);
     // GetselectedHOTWORKitem()
@@ -4984,30 +5045,136 @@ export class NewRequestComponent implements OnInit {
   }
 
   selectFloorBlocks: Array<any> = [];
-  images: any;
+  // images: any;
   // isimguploaded: boolean = false;
   // base64Images: any[] = [];
 
-  csvInputChange(e) {
-    for (var i = 0; i < e.target.files.length; i++) {
-      this.images = e.target.files[i];
-      console.log(e.target.files[i]);
-      var reader = new FileReader();
+  // csvInputChange(e) {
+  //   for (var i = 0; i < e.target.files.length; i++) {
+  //     this.images = e.target.files[i];
+  //     console.log(e.target.files[i]);
+  //     var reader = new FileReader();
 
-      reader.onload = this._handleReaderLoaded.bind(this);
-      reader.readAsDataURL(e.target.files[i]);
-      // this.isimguploaded = true;
-      // const formData = new FormData();
-      // formData.append('file', e.target.files[i]); // Append file
-      this.RequestForm.controls["rams_file"].setValue(e.target.files[i]);
-      // console.log(reader, "reader")
+  //     reader.onload = this._handleReaderLoaded.bind(this);
+  //     reader.readAsDataURL(e.target.files[i]);
+  //     // this.isimguploaded = true;
+  //     // const formData = new FormData();
+  //     // formData.append('file', e.target.files[i]); // Append file
+  //     this.RequestForm.controls["rams_file"].setValue(e.target.files[i]);
+  //     // console.log(reader, "reader")
+  //   }
+  // }
+  // _handleReaderLoaded(e) {
+  //   let reader = e.target;
+  //   // console.log(reader, "reader")
+  //   // this.base64Images.push(reader.result);
+  // }
+
+   images: { name: string }[] = [];
+  imagesAdd: { name: string }[] = [];;
+
+csvInputChange(e: any): void {
+  const files = e.target.files;
+  this.images = []; // Clear previous selection
+
+  if (files && files.length > 0) {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      this.images.push(file);
+
+      console.log(file);
+
+      const reader = new FileReader();
+      reader.onload = (event) => this._handleReaderLoaded(event, file);
+      reader.readAsDataURL(file);
     }
+
+    // Optional: store the whole file array in form control
+    // this.RequestForm.controls["rams_file"].setValue(this.images);
+
+    // Or just the first one (if your form only supports one)
+    this.RequestForm.controls["rams_file"].setValue(this.images);
   }
-  _handleReaderLoaded(e) {
-    let reader = e.target;
-    // console.log(reader, "reader")
-    // this.base64Images.push(reader.result);
+}
+
+csvInputChange1(e: any): void {
+  const files = e.target.files;
+  this.imagesAdd = []; // Clear previous selection
+
+  if (files && files.length > 0) {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      this.imagesAdd.push(file);
+
+      console.log(file);
+
+      const reader = new FileReader();
+      reader.onload = (event) => this._handleReaderLoaded(event, file);
+      reader.readAsDataURL(file);
+    }
+    this.FilesRequestForm.controls["rams_file"].setValue(this.imagesAdd)
+    this.addRamsFile();
   }
+}
+
+// Update _handleReaderLoaded to accept file context
+_handleReaderLoaded(event: any, file: File): void {
+  const result = event.target.result;
+  // Do what you need with the file + result
+  console.log('Loaded:', file.name, result);
+}
+
+addRamsFile() {
+  this.filesRequestData.rams_file = this.FilesRequestForm.controls["rams_file"].value;
+  this.filesRequestData.userId = this.updaterequestdata.userId;
+  this.filesRequestData.id = this.updaterequestdata.id;
+
+  let formData = new FormData();
+    // First: Append all normal fields except rams_file
+    for (const [key, value] of Object.entries(this.filesRequestData)) {
+      if (key !== 'rams_file' && value !== null && value !== undefined) {
+        formData.append(key, value as string);
+      }
+    }
+    
+    // Then: Append each file under same 'rams_file[]' field
+    if (this.filesRequestData.rams_file && this.filesRequestData.rams_file.length > 0) {
+      (this.filesRequestData.rams_file as File[]).forEach((file: File) => {
+        formData.append('rams_file[]', file);  // same field name again and again
+      });
+    } 
+    
+    this.requestsserivies.addRamsFiles(formData).subscribe(
+      (res) => {
+        this.spinner = false;
+        this.openSnackBar("File Added Successfully");
+        this.images = res.files.map(file => ({
+          name: file.rams_file, 
+          ...file              
+        })); 
+      },
+      (error) => {
+        this.openSnackBar("Something went wrong. Plz try again later...");
+      }
+    );
+}
+
+deleteRamsFile(data) {
+  let deleteRamsData = {
+    rams_file_id : data.rams_file_id
+  }
+  this.requestsserivies.deleteRamsFile(deleteRamsData).subscribe(
+    (res) => {
+      this.spinner = false;
+      this.openSnackBar("File Deleted Successfully");
+      this.images = this.images.filter((file: any) => file.rams_file_id !== data.rams_file_id);
+    },
+    (error) => {
+      this.openSnackBar("Something went wrong. Plz try again later...");
+    }
+  );
+}
+
 
 }
 

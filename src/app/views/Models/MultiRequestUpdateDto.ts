@@ -15,4 +15,6 @@ export class UpdateTime
     Start_Time:string;
     End_Time:string;
     id:string;
+    night_shift: any;
+    new_end_time: string;
 }

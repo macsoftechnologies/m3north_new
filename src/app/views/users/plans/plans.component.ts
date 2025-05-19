@@ -514,6 +514,21 @@ export class PlansComponent implements OnInit {
 //     link.click();
 //   }
 
+isValidDate(date: any): boolean {
+  if (!date) return false;
+
+  // if already a Date object
+  if (date instanceof Date && !isNaN(date.getTime())) return true;
+
+  // if ISO string or timestamp string
+  if (typeof date === 'string') {
+    const parsed = Date.parse(date);
+    return !isNaN(parsed);
+  }
+
+  return false;
+}
+
 
   exportToExcel() {
     this.DownloadExcelData.length=0;

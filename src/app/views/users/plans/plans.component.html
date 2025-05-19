@@ -239,7 +239,12 @@
 
             <ngx-datatable-column name="Working Date" [flexGrow]="1">
                 <ng-template let-row="row" ngx-datatable-cell-template>
-                    {{ row?.Working_Date | date:'mediumDate' }}
+                    <!-- {{ row?.Working_Date | date:'mediumDate' }} -->
+                       <ng-container *ngIf="isValidDate(row?.new_date); else noNewDate">
+  {{ row?.Working_Date | date:'mediumDate' }}
+</ng-container>
+<ng-template #noNewDate>N/A</ng-template>
+
                 </ng-template>
             </ngx-datatable-column>
             <ngx-datatable-column name="Time" [flexGrow]="1">
@@ -257,7 +262,11 @@
         
               <ngx-datatable-column name="New Date" [flexGrow]="1">
                 <ng-template let-row="row" ngx-datatable-cell-template>
-                    {{ row?.new_date | date: "mediumDate" }}
+                    <!-- {{ row?.new_date | date: "mediumDate" }} -->
+                      <ng-container *ngIf="isValidDate(row?.new_date); else noNewDate">
+  {{ row?.new_date | date:'mediumDate' }}
+</ng-container>
+<ng-template #noNewDate>N/A</ng-template>
                 </ng-template>
               </ngx-datatable-column>
               

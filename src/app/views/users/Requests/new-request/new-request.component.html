@@ -212,15 +212,40 @@
                   RAMSNumber</mat-error>
               </mat-form-field>
             </mat-grid-tile>
+            </mat-grid-list>
+          <mat-grid-list cols="1" rowHeight="100px">
 
             <mat-grid-tile>
-              <div class="upload-div-sty">
-                <input #csvInput hidden="true" type="file" multiple onclick="this.value=null"
+              <div class="upload-div-sty uploadBlock">
+                <!-- <input #csvInput hidden="true" type="file" multiple onclick="this.value=null"
                   (change)="csvInputChange($event)" accept="*" />
                 <button mat-flat-button class="logo-btn-sty" color="primary" (click)="csvInput.click()">Add RAMS
                   Files</button>
                 <span *ngIf="!editform">{{images?.name}}</span>
-                <span *ngIf="editform"><a href="{{'https://beam.safesiteworks.com/navodemoproject/beamapi/services/request/'+images?.name}}" target="_blank">{{images?.name}}</a></span>
+                <span *ngIf="editform"><a href="{{'https://beam.safesiteworks.com/navodemoproject/beamapi/services/request/'+images?.name}}" target="_blank">{{images?.name}}</a></span> -->
+              <input *ngIf="!editform" #csvInput hidden type="file" multiple 
+(change)="csvInputChange($event)" accept="*" />
+
+<!-- File input for edit mode -->
+<input *ngIf="editform" #csvInput1 hidden type="file" multiple 
+(change)="csvInputChange1($event)" accept="*" />
+
+<!-- Trigger Button -->
+<button mat-flat-button class="logo-btn-sty" color="primary" (click)="triggerFileInput()">
+Add Files
+</button>
+<div *ngIf="!editform" class="editImagesscroll">
+                  <div *ngFor="let file of images">{{ file.name }}</div>
+                </div>
+                
+                <div *ngIf="editform" class="editImagesscroll">
+                  <div *ngFor="let file of images"class="editImagesClass">
+                    <a [href]="'https://beam.safesiteworks.com/development/m3north/beamapi/services/request/' + file.name" target="_blank">
+                      {{ file.name }}
+                    </a>
+                    <mat-icon class="icons-sty fileremoveclass" (click)="deleteRamsFile(file)">remove</mat-icon>
+                  </div>
+                </div>
               </div>
 
               <!-- <div class="mat-card save-btn-sty" *ngIf="isimguploaded">

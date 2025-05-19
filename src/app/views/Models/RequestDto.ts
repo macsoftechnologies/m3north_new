@@ -158,6 +158,11 @@ export class RequestDto {
     createdTime: any;
 }
 
+export class FilesRequestDto {
+    userId: string;
+    rams_file: any;
+    id: string
+}
 
 export class EditRequestDto {
     userId: string;

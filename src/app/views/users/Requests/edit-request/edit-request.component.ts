@@ -23,12 +23,16 @@ export class EditRequestComponent implements OnInit {
   Notes:string="";
   StartTime:any;
   EndTime:string="";
+  night_shift: any;
+  new_end_time: any;
   minDate: Date;
   maxDate: Date;
   IsNotes:boolean=false;
   IsSafety:boolean=false;
   IsTime:boolean=false;
   spinner:boolean=false;
+  isnightshiftyes: boolean = false;
+  EndTimeValidator: boolean = false;
 
   Safetypreselectable = true;
   safetyprecdata: any[] = [];
@@ -55,7 +59,9 @@ updatetimes:UpdateTime=
 {
   id:null,
   Start_Time:null,
-  End_Time:null
+  End_Time:null,
+  night_shift: null,
+  new_end_time: null
 }
 
   constructor(private reqservice:RequestService,@Inject(MAT_DIALOG_DATA) public data: any,
@@ -146,19 +152,61 @@ updatetimes:UpdateTime=
       });
   }
 
+ 
+    toggleNightShift(isChecked: boolean) {
+    this.isnightshiftyes = isChecked;
+    this.updatetimes.night_shift = isChecked ? 1 : 0;
+  }
+
   CreateTime()
   {
     this.spinner=true;
-    this.updatetimes.Start_Time=this.datePipe.transform(this.StartTime,'HH:mm');
-    this.updatetimes.End_Time=this.datePipe.transform(this.EndTime,'HH:mm');
+    console.log("..startTime", this.StartTime);
+    console.log("...endTime", this.EndTime);
+    console.log("...nightshift", this.night_shift);
+    console.log("...new_end_time", this.new_end_time);
+    if(this.StartTime && this.StartTime !== '' && this.StartTime !== undefined) {
+       this.updatetimes.Start_Time=this.datePipe.transform(this.StartTime,'HH:mm');
+    } else {
+      delete this.updatetimes.Start_Time;
+    }
+    if(this.EndTime && this.EndTime !== '' && this.EndTime !== undefined) {
+       this.updatetimes.End_Time=this.datePipe.transform(this.EndTime,'HH:mm');
+    } else {
+      delete this.updatetimes.End_Time;
+    }
+    // if(this.night_shift == 1 && this.night_shift !== undefined) {
+    //    this.updatetimes.night_shift= this.night_shift;
+    // } else {
+    //   delete this.updatetimes.night_shift;
+    // }
+    if(this.new_end_time  && this.new_end_time !== '' && this.new_end_time !== undefined) {
+       this.updatetimes.new_end_time = this.datePipe.transform(this.new_end_time,'HH:mm');
+    } else {
+      delete this.updatetimes.new_end_time;
+    }
+    console.log("...datapayload", this.data);
     this.updatetimes.id=this.data["payload"];
+    console.log(".....updatetimes", this.updatetimes);
+    if(this.updatetimes.Start_Time > this.updatetimes.End_Time) {
+      this.EndTimeValidator = true;
+    }
 
-    this.reqservice.UpdateListReqstTime(this.updatetimes).subscribe(res=>
-      {
-        this.openSnackBar("Time updated Successfully");
-        this.spinner=false;
-      })
+    if(!this.EndTimeValidator) {
+         this.reqservice.UpdateListReqstTime(this.updatetimes).subscribe(res=>
+      // {
+      //   this.openSnackBar("Time updated Successfully");
+      //   this.spinner=false;
+      console.log("response....", res)
+      )
+    } else {
+      this.openSnackBar("EndTime Should be greaterthan StartTime.");
+      return ;
+    }
+
+ 
   }
+
 
   openSnackBar(msg) {
     this._snackBar.open(msg, "Close", {

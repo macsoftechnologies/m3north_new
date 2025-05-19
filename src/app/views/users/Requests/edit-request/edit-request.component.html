@@ -55,7 +55,7 @@
     <button class="butns-grp" mat-raised-button color="primary" mat-dialog-close>Close</button>
   </div>
  </div>
- <div *ngIf="IsTime">
+<div *ngIf="IsTime">
   <mat-grid-list cols="2" rowHeight="80px">
   <mat-grid-tile>
    
@@ -75,11 +75,51 @@
       [style.width]="'350px'"
       [(ngModel)]="EndTime"
       [owlDateTimeTrigger]="EndTimer" [owlDateTime]="EndTimer">
-  <owl-date-time #EndTimer pickerType="timer"></owl-date-time>
+  <owl-date-time #EndTimer [pickerType]="'timer'" [selectFilter]="endTimeFilter"></owl-date-time>
+
     </mat-form-field>
     <ngx-material-timepicker #endTime [minutesGap]="5"></ngx-material-timepicker>
   </mat-grid-tile>
 </mat-grid-list>
+
+  <!-- Edit NightShift and new end time section -->
+   <mat-grid-list cols="2" rowHeight="80px">
+    <!-- Night Shift Checkbox -->
+<mat-grid-tile class="night-shift">
+    <label>Is this a night shift?</label>
+    <mat-checkbox
+      (change)="toggleNightShift($event.checked)">
+      Yes
+    </mat-checkbox>
+  </mat-grid-tile>
+
+  <!-- New End Time input shown only if night shift is selected -->
+  <!-- <mat-grid-tile *ngIf="isnightshiftyes" class="night-shift-fields">
+    <mat-form-field class="full-width" appearance="outline">
+      <mat-label>New End Time</mat-label>
+      <input 
+        matInput 
+        [ngxTimepicker]="endTimePicker" 
+        [format]="24" 
+        placeholder="New End Time"
+        [(ngModel)]="new_end_time" />
+      <ngx-material-timepicker #endTimePicker [minutesGap]="5" [appendToInput]="true"></ngx-material-timepicker>
+    </mat-form-field>
+  </mat-grid-tile> -->
+  <mat-grid-tile *ngIf="isnightshiftyes" >
+    <mat-form-field class="full-width" appearance="outline">
+      <input matInput placeholder="New End Time"
+      [style.width]="'350px'"
+      [(ngModel)]="new_end_time"
+      [owlDateTimeTrigger]="NewEndTimer" [owlDateTime]="NewEndTimer">
+  <owl-date-time #NewEndTimer pickerType="timer"></owl-date-time>
+    </mat-form-field>
+    <ngx-material-timepicker #endTime [minutesGap]="5"></ngx-material-timepicker>
+  </mat-grid-tile>
+  </mat-grid-list>
+
+
+
   <div class="btns-sty">
     <button class="butns-grp" mat-raised-button color="primary" mat-dialog-close (click)="CreateTime()">Save</button>
     <button class="butns-grp" mat-raised-button color="primary" mat-dialog-close>Close</button>

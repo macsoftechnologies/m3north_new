@@ -12,6 +12,29 @@
   padding: 30px;
 }
 
+
+.editImagesClass{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.editImagesscroll{
+  height: 50px;
+  overflow-y: scroll;
+}
+
+.fileremoveclass{
+  color: red;
+}
+
+.uploadBlock{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+
 .cmsnum {
   width: 100%;
   padding-right: 70px;
