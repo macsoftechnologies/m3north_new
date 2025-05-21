@@ -3376,8 +3376,11 @@ export class NewRequestComponent implements OnInit {
       // Check if the start date exists and is valid
       let workdate = startDateValue != '0000-00-00' ? this.datePipe.transform(startDateValue, "yyyy-MM-dd")
         : null;
-          let newworkdate = newDateValue != '0000-00-00' || newDateValue != "" ? this.datePipe.transform(newDateValue, "yyyy-MM-dd")
-        : null;
+      //   let newworkdate = (newDateValue != '0000-00-00') || (newDateValue != "") || (newDateValue != "null") ? this.datePipe.transform(newDateValue, "yyyy-MM-dd")
+        // : null;
+        let newworkdate = (newDateValue && newDateValue !== '0000-00-00' && newDateValue !== '' && newDateValue !== 'null' && newDateValue !== null)
+  ? this.datePipe.transform(newDateValue, "yyyy-MM-dd")
+  : null;
         this.updaterequestdata.night_shift =
         this.RequestForm.controls["night_shift"].value;
         // this.updaterequestdata.new_date = newworkdate;
@@ -3389,11 +3392,17 @@ export class NewRequestComponent implements OnInit {
         // } else {
         //   this.updaterequestdata.new_date = "";
         // }
+          if(this.updaterequestdata.night_shift == 1) {
           this.updaterequestdata.new_date = newworkdate;
-
-          console.log(".....newdateedit", this.updaterequestdata.new_date);
         this.updaterequestdata.new_end_time =
         this.RequestForm.controls["new_end_time"].value;
+          } else {
+            this.updaterequestdata.new_date = null;
+            this.updaterequestdata.new_end_time = ""
+          }
+
+          console.log(".....newdateedit", this.updaterequestdata.new_date);
+       
       this.updaterequestdata.Working_Date = workdate;
       this.updaterequestdata.Start_Time =
         this.RequestForm.controls["StartTime"].value;
@@ -4247,9 +4256,16 @@ export class NewRequestComponent implements OnInit {
     this.RequestForm.controls["Room"].setValue(roomData);
     console.log(roomData, "DEMO")
 
-    this.RequestForm.controls["Safetyprecaustion"].setValue(
-      data["Safety_Precautions"].split(",")
-    );
+// this.RequestForm.controls["Safetyprecaustion"].setValue(
+    //   data["Safety_Precautions"].split(",")
+    // );
+    const precautionIds = data["Safety_Precautions"]
+  ? data["Safety_Precautions"].split(",").map(id => Number(id))
+  : [];
+
+this.RequestForm.controls["Safetyprecaustion"].setValue(precautionIds);
+
+    console.log("safetydatabinding", data["Safety_Precautions"].split(","));
 
     this.Getselectedsubcntrsteams(data["Sub_Contractor_Id"]);
 
@@ -4373,7 +4389,11 @@ export class NewRequestComponent implements OnInit {
     }
 
     this.RequestForm.controls["Startdate"].setValue(data["Working_Date"]);
-    this.RequestForm.controls["night_shift"].setValue(data["night_shift"]);
+// this.RequestForm.controls["night_shift"].setValue(data["night_shift"]);
+    // this.isnightshiftyes = data["night_shift"] === "1";
+    const nightShiftValue = data["night_shift"] == "1" ? 1 : 0;
+    this.RequestForm.controls["night_shift"].setValue(nightShiftValue);
+    this.isnightshiftyes = nightShiftValue === 1;
     this.RequestForm.controls["newWorkDate"].setValue(data["new_date"]);
     this.RequestForm.controls["new_end_time"].setValue(data["new_end_time"]);
     this.RequestForm.controls["Tools"].setValue(data["Tools"]);
@@ -4586,12 +4606,7 @@ export class NewRequestComponent implements OnInit {
     } else {
       this.iscmsyes = false;
     }
-    
-    if(data["night_shift"] == 1) {
-      this.isnightshiftyes = true;
-    } else {
-      this.isnightshiftyes = false;
-    }
+ 
     
     if (data["Hot_work"] == 1) {
       console.log('sdfsdfds');

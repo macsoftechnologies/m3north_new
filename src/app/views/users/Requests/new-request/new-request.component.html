@@ -387,7 +387,6 @@ Add Files
               </label> 
               <mat-checkbox 
                 formControlName="night_shift"
-                [checked]="RequestForm.get('night_shift').value === 1"
                 (change)="toggleNightShift($event.checked)">
                   Yes
               </mat-checkbox>
