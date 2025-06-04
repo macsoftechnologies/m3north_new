@@ -213,7 +213,7 @@
               </mat-form-field>
             </mat-grid-tile>
             </mat-grid-list>
-          <mat-grid-list cols="1" rowHeight="100px">
+          <mat-grid-list cols="2" rowHeight="100px">
 
             <mat-grid-tile>
               <div class="upload-div-sty uploadBlock">
@@ -234,18 +234,7 @@
 <button mat-flat-button class="logo-btn-sty" color="primary" (click)="triggerFileInput()">
 Add Files
 </button>
-<div *ngIf="!editform" class="editImagesscroll">
-                  <div *ngFor="let file of images">{{ file.name }}</div>
-                </div>
-                
-                <div *ngIf="editform" class="editImagesscroll">
-                  <div *ngFor="let file of images"class="editImagesClass">
-                    <a [href]="'https://beam.safesiteworks.com/development/m3north/beamapi/services/request/' + file.name" target="_blank">
-                      {{ file.name }}
-                    </a>
-                    <mat-icon class="icons-sty fileremoveclass" (click)="deleteRamsFile(file)">remove</mat-icon>
-                  </div>
-                </div>
+
               </div>
 
               <!-- <div class="mat-card save-btn-sty" *ngIf="isimguploaded">
@@ -259,6 +248,20 @@ Add Files
               </div> -->
 
 
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <div *ngIf="!editform" class="editImagesscroll">
+                  <div *ngFor="let file of images">{{ file.name }}</div>
+                </div>
+                
+                <div *ngIf="editform" class="editImagesscroll">
+                  <div *ngFor="let file of images"class="editImagesClass">
+                    <a [href]="'https://beam.safesiteworks.com/m3north/beamapi/services/request/' + file.name" target="_blank">
+                      {{ file.name }}
+                    </a>
+                    <mat-icon class="icons-sty fileremoveclass" (click)="deleteRamsFile(file)">remove</mat-icon>
+                  </div>
+                </div>
             </mat-grid-tile>
 
           </mat-grid-list>
