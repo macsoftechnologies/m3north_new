@@ -243,7 +243,15 @@ export class RequestBuildingModelComponent implements OnInit {
           value: 'MA30.S',
           className: "MA_III_Yellow_Zones-9",
           isSelected: false
-        }
+        },{
+          value: 'MA60',
+          className: "MA_III_Yellow_Zones-10",
+          isSelected: false
+        },{
+          value: 'MA30',
+          className: "MA_III_Yellow_Zones-11",
+          isSelected: false
+        },
       ]
       if (selectedBlockData) {
         if ((selectedBlockData.floorName == this.data.floor.name) && (selectedBlockData.planType == this.data.floor.planType)) {

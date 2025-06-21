@@ -267,6 +267,18 @@ mat-checkbox ::ng-deep .mat-checkbox-inner-container {
   bottom: 2%;
   left: 19%;
 }
+.MA_III_Yellow_Zones-10 {
+  position: absolute;
+  z-index: 9999;
+  top: 13%;
+  left: 35%;
+}
+.MA_III_Yellow_Zones-11 {
+  position: absolute;
+  z-index: 9999;
+  bottom: 41%;
+  left: 26%;
+}
 
 /* end MA_III_Yellow_Zones-1 */
 
