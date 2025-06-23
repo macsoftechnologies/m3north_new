@@ -14,4 +14,5 @@ export class PlansDto
     to_date:string;
     start_time:string;
     end_time:string;
+    area: string;
 }

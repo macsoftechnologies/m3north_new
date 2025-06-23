@@ -6,6 +6,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { JwtAuthService } from 'app/shared/services/auth/jwt-auth.service';
 import { Router } from "@angular/router";
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { config } from "config";
+import * as moment from 'moment';
 // import { getItems } from 'app/views/users/Requests/list-request'
 
 @Component({
@@ -29,9 +31,11 @@ export class RequestSaveOptionsDialogComponent implements OnInit {
       userId: null,
       ConM_initials: null,
       reject_reason: null,
+      createdTime: null,
     }
   userData: any = {};
   statusApprovedForm: any;
+  CurrenttimeNow: string;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<RequestSaveOptionsDialogComponent>,
@@ -59,11 +63,24 @@ export class RequestSaveOptionsDialogComponent implements OnInit {
 
     this.dialogRef.close({ data: status });
   }
+        startTime() {
+
+  }
   ChangeListStaus() {
 
+        var today = moment.tz("Europe/Copenhagen");
+        this.CurrenttimeNow = today.format('HH:mm:ss');
+      
+        // document.getElementById('watch1').innerHTML = today.format('DD/MM/YYYY');
+        var t = setTimeout(this.startTime, 500);
+    console.log(config.Denmarktz.split(" "));
+          const [currentDenmarkDate, currentDenmarkTime] = [
+            ...config.Denmarktz.split(" "),
+          ];
     this.UpdateRequestStatusList.Request_status = this.status;
     this.UpdateRequestStatusList.id = this.req_ids;
     this.UpdateRequestStatusList.userId = this.userData["id"];
+    this.UpdateRequestStatusList.createdTime = `${currentDenmarkDate}, ${currentDenmarkTime}`;
 
     if (this.statusApprovedForm.get('ConM_initials').valid) {
       this.UpdateRequestStatusList.ConM_initials = this.statusApprovedForm.value.ConM_initials;

@@ -14,7 +14,7 @@
         <mat-grid-tile>
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>Type Of Activity</mat-label>
-            <mat-select formControlName="TypeOfActivity" name="Typeofactivity">
+            <mat-select formControlName="TypeOfActivity" name="Typeofactivity" [multiple]="true">
               <mat-option>None</mat-option>
               <mat-option *ngFor="let loc of Typeofactivitys" [value]="loc.id">
                 {{ loc.activityName }}
@@ -25,7 +25,7 @@
         <mat-grid-tile>
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>Status</mat-label>
-            <mat-select formControlName="Status" name="Status">
+            <mat-select formControlName="Status" name="Status" [multiple]="true">
               <mat-option>None</mat-option>
               <mat-option *ngFor="let loc of Status" [value]="loc.Statusid">
                 {{ loc.Statusname }}
@@ -72,7 +72,7 @@
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>Contractor</mat-label>
             <!-- <mat-select formControlName="Contractor" name="Company" [disabled]="!IsNotSubCntr"> -->
-              <mat-select formControlName="Contractor" name="Company" [disabled]="!IsNotASubCntr">
+              <mat-select formControlName="Contractor" name="Company" [disabled]="!IsNotASubCntr" [multiple]="true">
               <mat-option>None</mat-option>
               <mat-option *ngFor="let loc of Contractors" [value]="loc.id">
                 {{ loc.subContractorName }}
@@ -94,7 +94,7 @@
         <mat-grid-tile>
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>Building</mat-label>
-            <mat-select formControlName="Building" name="Building">
+            <mat-select formControlName="Building" name="Building" [multiple]="true">
               <mat-option>None</mat-option>
               <mat-option *ngFor="let loc of Buildings" [value]="loc.build_id">
                 {{ loc.building_name }}
@@ -143,7 +143,7 @@
         <mat-grid-tile>
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>Level</mat-label>
-            <mat-select formControlName="Level" name="Level">
+            <mat-select formControlName="Level" name="Level" [multiple]="true">
               <mat-option>None</mat-option>
               <mat-option *ngFor="let Floors of getFloors" [value]="Floors">
                 {{ Floors }}
@@ -152,7 +152,7 @@
           </mat-form-field>
         </mat-grid-tile>
 
-        <mat-grid-tile>
+        <!-- <mat-grid-tile>
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>HRA'S</mat-label>
             <mat-select formControlName="Hras" name="Hras" [multiple]="true">
@@ -163,7 +163,26 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-        </mat-grid-tile>
+        </mat-grid-tile> -->
+
+                <mat-grid-tile>
+
+          <mat-form-field class="full-width" appearance="outline">
+    <mat-label>Area</mat-label>
+    <mat-select formControlName="area" name="area" [multiple]="true">
+      <mat-option [value]="null">None</mat-option>
+
+      <ng-container *ngFor="let group of getRooms">
+        <mat-optgroup [label]="group.floorName">
+          <mat-option *ngFor="let zone of group.zones" [value]="zone.value">
+            {{ zone.value }}
+          </mat-option>
+        </mat-optgroup>
+      </ng-container>
+
+    </mat-select>
+  </mat-form-field>
+</mat-grid-tile>
 
         <!-- {{RequestlistForm.get("Hras").value | json}} -->
 
@@ -177,6 +196,19 @@
               <mat-option  [value]="'none'">None</mat-option>
               <mat-option *ngFor="let getTaskSpecificValues of getTaskSpecific" [value]="getTaskSpecificValues" class="hras-text">
                 <div class="hras-content"> <img src="{{BaseUrl}}{{getTaskSpecificValues?.image}}" class="hras-image"> {{ getTaskSpecificValues.label }}
+                </div>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+
+                <mat-grid-tile>
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>HRA'S</mat-label>
+            <mat-select formControlName="Hras" name="Hras" [multiple]="true">
+              <mat-option [value]="'none'">None</mat-option>
+              <mat-option *ngFor="let hras of getHras" [value]="hras" class="hras-text">
+                <div class="hras-content"> <img src="{{BaseUrl}}{{hras?.image}}" class="hras-image"> {{ hras.label }}
                 </div>
               </mat-option>
             </mat-select>

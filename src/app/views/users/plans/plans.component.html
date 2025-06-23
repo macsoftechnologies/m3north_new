@@ -173,7 +173,23 @@
                             </mat-select>
                         </mat-form-field>
                     </mat-grid-tile>
+     <mat-grid-tile>
+  <mat-form-field class="full-width" appearance="outline">
+    <mat-label>Area</mat-label>
+    <mat-select formControlName="area" name="Level" [multiple]="true">
+      <mat-option [value]="null">None</mat-option>
 
+      <ng-container *ngFor="let group of getRooms">
+        <mat-optgroup [label]="group.floorName">
+          <mat-option *ngFor="let zone of group.zones" [value]="zone.value">
+            {{ zone.value }}
+          </mat-option>
+        </mat-optgroup>
+      </ng-container>
+
+    </mat-select>
+  </mat-form-field>
+</mat-grid-tile>
                 </mat-grid-list>
             </form>
             <div class="" style="text-align: right;">
@@ -240,10 +256,10 @@
             <ngx-datatable-column name="Working Date" [flexGrow]="1">
                 <ng-template let-row="row" ngx-datatable-cell-template>
                     <!-- {{ row?.Working_Date | date:'mediumDate' }} -->
-                       <ng-container *ngIf="isValidDate(row?.new_date); else noNewDate">
+                       <ng-container *ngIf="isValidDate(row?.Working_Date); else noWorkingDate">
   {{ row?.Working_Date | date:'mediumDate' }}
 </ng-container>
-<ng-template #noNewDate>N/A</ng-template>
+<ng-template #noWorkingDate>N/A</ng-template>
 
                 </ng-template>
             </ngx-datatable-column>

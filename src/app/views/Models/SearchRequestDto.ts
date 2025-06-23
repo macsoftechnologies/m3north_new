@@ -15,6 +15,7 @@ export class SearchRequestDto
     Page: string;
     hras: string;
     taskSpecificPPE: string;
+    area: string;
 }
 
 export class ListRequest

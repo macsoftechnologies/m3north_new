@@ -345,6 +345,7 @@ export class UpdateRequestStatusListDto {
     userId: string;
   ConM_initials: any;
   reject_reason: any;
+  createdTime: any;
 }
 
 export class CopyRequestDto {

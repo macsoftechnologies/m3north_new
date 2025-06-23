@@ -132,7 +132,7 @@ export class SubContractorComponent implements OnInit {
     // this.updatesubcontr.logo=this.croppedImage;
 
     this.subcservice.UpdateSubContractor(this.updatesubcontr).subscribe(res => {
-      debugger
+      // debugger
       if (res["status"] == "200") {
         this.openSnackBar("Subcontractor Updated Successfully");
         window.location.reload();

@@ -366,6 +366,7 @@ export class ListRequestComponent implements OnInit {
     Page: null,
     hras: '',
     taskSpecificPPE: '',
+    area: '',
   };
 
   RequestsbyidDto: RequestBySubcontractorId = {
@@ -456,10 +457,28 @@ export class ListRequestComponent implements OnInit {
       Building: ['', Validators.required],
       Level: ['', Validators.required],
       Hras: ['',],
-      TaskSpecific:['',]
+      TaskSpecific:['',],
+      area: ['',]
 
     });
+        const buildingData = this.requestservice.generateBulidFloorData();
+    this.getRooms = this.extractGroupedZoneData(buildingData);
   }
+     extractGroupedZoneData(data: any[]): any[] {
+  const result = [];
+  data.forEach(plan => {
+    plan.zoneList.forEach(zone => {
+      result.push({
+        floorName: zone.floorName,
+        zones: zone.zoneSubList.map(sub => ({
+          value: sub.value,
+          className: sub.className
+        }))
+      });
+    });
+  });
+  return result;
+}
   ngOnDestroy() {
     if (this.getItemSub) {
       this.getItemSub.unsubscribe();
@@ -716,8 +735,20 @@ export class ListRequestComponent implements OnInit {
 
     console.log(this.RequestlistForm.controls.Level, 'Level');
     this.spinner = true;
-    this.SearchRequest.Request_status =
-      this.RequestlistForm.controls['Status'].value;
+const statusValue = this.RequestlistForm.controls['Status'].value;
+const statusArray = Array.isArray(statusValue) ? statusValue : [statusValue]; 
+
+const formattedStatus = statusArray
+  .filter(val => val !== null && val !== undefined && val !== '') 
+  .map((val: string) => `'${val}'`)
+  .join(',');
+
+this.SearchRequest.Request_status = formattedStatus || ""; 
+
+//     const statusArray = this.RequestlistForm.controls['Status'].value;
+// this.SearchRequest.Request_status = statusArray.map((val: string) => `'${val}'`).join(',');
+    // this.SearchRequest.Request_status =
+    //   this.RequestlistForm.controls['Status'].value.toString();
     this.SearchRequest.Activity =
       this.RequestlistForm.controls['Keyword'].value;
     this.SearchRequest.PermitNo =
@@ -725,9 +756,9 @@ export class ListRequestComponent implements OnInit {
     // this.SearchRequest.Site_Id = this.RequestlistForm.controls['Site'].value;
     this.SearchRequest.Site_Id = '5';
     this.SearchRequest.Building_Id =
-      this.RequestlistForm.controls['Building'].value;
+      this.RequestlistForm.controls['Building'].value.toString();
     this.SearchRequest.Sub_Contractor_Id =
-      this.RequestlistForm.controls['Contractor'].value;
+      this.RequestlistForm.controls['Contractor'].value.toString();
     var mydate = this.datePipe.transform(
       this.RequestlistForm.controls['WorkingDateFrom'].value,
       'yyyy-MM-dd'
@@ -737,8 +768,30 @@ export class ListRequestComponent implements OnInit {
       'yyyy-MM-dd'
     );
     this.SearchRequest.Type_Of_Activity_Id =
-      this.RequestlistForm.controls['TypeOfActivity'].value;
-    this.SearchRequest.Room_Type = this.RequestlistForm.controls['Level'].value;
+      this.RequestlistForm.controls['TypeOfActivity'].value.toString();
+        // this.SearchRequest.Room_Type = this.RequestlistForm.controls['Level'].value.toString();
+  const levelValue = this.RequestlistForm.controls['Level'].value;
+const levelsArray = Array.isArray(levelValue) ? levelValue : [levelValue]; 
+
+const formattedLevel = levelsArray
+  .filter(val => val !== null && val !== undefined && val !== '') 
+  .map((val: string) => `'${val}'`)
+  .join(',');
+
+this.SearchRequest.Room_Type = formattedLevel || ""; 
+
+ const areaValue = this.RequestlistForm.controls['area'].value;
+const areasArray = Array.isArray(areaValue) ? areaValue : [areaValue]; 
+
+const formattedArea = areasArray
+  .filter(val => val !== null && val !== undefined && val !== '') 
+  .map((val: string) => `${val}`)
+  .join('|');
+
+this.SearchRequest.area = formattedArea || ""; 
+
+//     const levelsArray = this.RequestlistForm.controls['Level'].value;
+// this.SearchRequest.Room_Type = levelsArray.map((val: string) => `'${val}'`).join(',');
     this.SearchRequest.Start = this.startValue;
     this.SearchRequest.End = '30';
     this.SearchRequest.Page = this.currentPage;
@@ -767,8 +820,14 @@ export class ListRequestComponent implements OnInit {
         this.SearchRequest[item.key] = item.value.toString()
       })
     }
+         const allTaskSpecificKeys = ['eye_protection', 'fall_protection', 'head_protection', 'gloves', 'hearing_protection']; // Add all possible keys here
+
     if(this.RequestlistForm.get("TaskSpecific").value.includes('none')) {
       this.SearchRequest.taskSpecificPPE = 'none';
+      
+      allTaskSpecificKeys.forEach(key => {
+        delete this.SearchRequest[key];
+      });
     }
      else {
       this.SearchRequest.taskSpecificPPE = '';
@@ -1245,7 +1304,7 @@ export class ListRequestComponent implements OnInit {
   Getselected(event) {
     console.log(event);
     this.selected.forEach((x) => {
-      if (x['Request_status'] == 'Hold') {
+          if ((x['Request_status'] == 'Draft') ||(x['Request_status'] == 'Hold') || (x['Request_status'] =="Approved") || (x['Request_status'] =="Opened")) {
         this.selectedRequestIds.push(x['id']);
       }
     });
@@ -1417,8 +1476,19 @@ export class ListRequestComponent implements OnInit {
         this.Typeofactivitys = res['data'];
       });
     } else if (this.api == 'SearchRequest') {
-      this.SearchRequest.Request_status =
-        this.RequestlistForm.controls['Status'].value;
+      // this.SearchRequest.Request_status =
+      //   this.RequestlistForm.controls['Status'].value;
+      const statusValue = this.RequestlistForm.controls['Status'].value;
+const statusArray = Array.isArray(statusValue) ? statusValue : [statusValue]; 
+
+const formattedStatus = statusArray
+  .filter(val => val !== null && val !== undefined && val !== '') 
+  .map((val: string) => `'${val}'`)
+  .join(',');
+
+this.SearchRequest.Request_status = formattedStatus || ""; 
+//       const statusArray = this.RequestlistForm.controls['Status'].value;
+// this.SearchRequest.Request_status = statusArray.map((val: string) => `'${val}'`).join(',');
       this.SearchRequest.Activity =
         this.RequestlistForm.controls['Keyword'].value;
       this.SearchRequest.PermitNo =
@@ -1426,9 +1496,9 @@ export class ListRequestComponent implements OnInit {
       // this.SearchRequest.Site_Id = this.RequestlistForm.controls['Site'].value;
       this.SearchRequest.Site_Id = '5';
       this.SearchRequest.Building_Id =
-        this.RequestlistForm.controls['Building'].value;
+        this.RequestlistForm.controls['Building'].value.toString();
       this.SearchRequest.Sub_Contractor_Id =
-        this.RequestlistForm.controls['Contractor'].value;
+        this.RequestlistForm.controls['Contractor'].value.toString();
       var mydate = this.datePipe.transform(
         this.RequestlistForm.controls['WorkingDateFrom'].value,
         'yyyy-MM-dd'
@@ -1438,9 +1508,29 @@ export class ListRequestComponent implements OnInit {
         'yyyy-MM-dd'
       );
       this.SearchRequest.Type_Of_Activity_Id =
-        this.RequestlistForm.controls['TypeOfActivity'].value;
-      this.SearchRequest.Room_Type =
-        this.RequestlistForm.controls['Level'].value;
+        this.RequestlistForm.controls['TypeOfActivity'].value.toString();
+      // this.SearchRequest.Room_Type =
+      //   this.RequestlistForm.controls['Level'].value.toString();
+      const levelValue = this.RequestlistForm.controls['Level'].value;
+const levelsArray = Array.isArray(levelValue) ? levelValue : [levelValue]; 
+
+const formattedLevel = levelsArray
+  .filter(val => val !== null && val !== undefined && val !== '') 
+  .map((val: string) => `'${val}'`)
+  .join(',');
+
+this.SearchRequest.Room_Type = formattedLevel || ""; 
+ const areaValue = this.RequestlistForm.controls['area'].value;
+const areasArray = Array.isArray(areaValue) ? areaValue : [areaValue]; 
+
+const formattedArea = areasArray
+  .filter(val => val !== null && val !== undefined && val !== '') 
+  .map((val: string) => `${val}`)
+  .join('|');
+
+this.SearchRequest.area = formattedArea || ""; 
+//       const levelsArray = this.RequestlistForm.controls['Level'].value;
+// this.SearchRequest.Room_Type = levelsArray.map((val: string) => `'${val}'`).join(',');
       this.SearchRequest.Start = start;
       console.log("start", start)
       this.SearchRequest.End = '30';
